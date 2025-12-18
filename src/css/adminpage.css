@@ -1,0 +1,320 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* ✅ SADECE ADMIN ALANINI ETKİLER */
+.admin-shell,
+.admin-shell *{
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* ---------- ADMIN THEME (LOCAL VARIABLES) ---------- */
+.admin-shell{
+    --bg:#0b1220;
+    --panel:rgba(255,255,255,0.06);
+    --card:rgba(255,255,255,0.08);
+    --border:rgba(255,255,255,0.14);
+    --text:rgba(255,255,255,0.92);
+    --muted:rgba(255,255,255,0.70);
+    --accent:#f5d36a;
+
+    --shadow:0 18px 50px rgba(0,0,0,0.35);
+    --radius:18px;
+
+    flex: 1;
+    width: 100%;
+    min-height: 100vh;              /* ✅ beyaz alt boşluk gider */
+    color: var(--text);
+    overflow-x: hidden;
+
+    /* Navbar fixed ise üst pay (90px navbar varsayımı) */
+    padding: 44px 18px 70px;
+    padding-top: calc(44px + 90px);
+
+    background:
+            radial-gradient(900px 500px at 15% 10%, rgba(125,211,252,0.15), transparent 60%),
+            radial-gradient(800px 480px at 90% 0%, rgba(245,211,106,0.10), transparent 55%),
+            linear-gradient(180deg,#070b14,var(--bg));
+}
+
+/* ---------- LOGIN ---------- */
+.admin-login-card{
+    max-width: 520px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    padding: 18px;
+}
+
+.admin-login-head{ margin-bottom: 12px; }
+
+.admin-title{ margin: 0; font-size: 26px; }
+.admin-subtitle{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+
+/* ---------- TOPBAR ---------- */
+.admin-topbar{
+    max-width: 1100px;
+    margin: 0 auto 16px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    padding: 18px;
+}
+
+/* ---------- GRID ---------- */
+.admin-grid{
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+@media (max-width: 900px){
+    .admin-grid{ grid-template-columns: 1fr; }
+}
+
+/* ---------- CARD ---------- */
+.admin-shell .card{
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    padding: 14px;
+    overflow: hidden;
+}
+
+.admin-shell .card-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 2px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    margin-bottom: 12px;
+}
+
+.admin-shell .card-head h2{ margin: 0; font-size: 16px; }
+
+.admin-shell .badge{
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(0,0,0,0.25);
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+/* ---------- FORM ---------- */
+.admin-shell .admin-form{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-shell .field label{
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.admin-shell .field input,
+.admin-shell .field textarea{
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.28);
+    color: var(--text);
+    outline: none;
+}
+
+.admin-shell .field textarea{
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.admin-shell .field input:focus,
+.admin-shell .field textarea:focus{
+    border-color: rgba(245,211,106,0.55);
+    box-shadow: 0 0 0 4px rgba(245,211,106,0.10);
+}
+
+.admin-shell .row-between{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ---------- BUTTONS (SCOPED) ---------- */
+.admin-shell .btn{
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(0,0,0,0.28);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.admin-shell .btn:hover{ transform: translateY(-1px); }
+
+.admin-shell .btn:disabled{
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.admin-shell .btn.primary{
+    border-color: rgba(245,211,106,0.55);
+    background: rgba(245,211,106,0.16);
+    box-shadow: 0 0 0 4px rgba(245,211,106,0.10);
+}
+
+.admin-shell .btn.ghost{ background: rgba(0,0,0,0.18); }
+
+.admin-shell .btn.danger{
+    border-color: rgba(239,68,68,0.40);
+    background: rgba(239,68,68,0.14);
+}
+
+.admin-shell .btn.small{
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+/* ---------- PICKED FILE THUMBS ---------- */
+.admin-shell .thumbs{
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+@media (max-width: 520px){
+    .admin-shell .thumbs{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.admin-shell .thumb-wrap{
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(0,0,0,0.18);
+    border-radius: 14px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-shell .thumb-wrap img{
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* ---------- EVENTS LIST ---------- */
+.admin-shell .events-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-shell .event-item{
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.18);
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.admin-shell .event-main{ flex: 1; min-width: 0; }
+
+.admin-shell .event-head{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.admin-shell .event-title{ font-size: 14px; }
+.admin-shell .event-date{ font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+.admin-shell .event-desc{
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.admin-shell .event-thumbs{
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.admin-shell .event-thumbs img{
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.22);
+}
+
+.admin-shell .muted{ color: var(--muted); }
+
+/* ---- ANNOUNCEMENTS EXTRA ---- */
+.admin-shell .admin-grid--spaced{
+    margin-top: 18px;
+}
+
+.admin-shell .file-row{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.admin-shell .file-pill{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(0,0,0,0.22);
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.admin-shell .file-link{
+    text-decoration: none;
+    color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.22);
+    font-size: 13px;
+}
+
+.admin-shell .file-link:hover{
+    border-bottom-color: rgba(245,211,106,0.55);
+}
+

@@ -1,0 +1,79 @@
+html, body { height: 100%; }
+body { margin: 0; }
+
+#root{
+    min-height: 100vh;
+    display: flex;
+}
+
+.app-shell{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    isolation: isolate;
+}
+
+.app-main{
+    flex: 1;              /* footer'ı aşağı iter */
+}
+
+.app-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+            radial-gradient(900px 520px at 15% 10%, rgba(247, 114, 114, 0.30), transparent 60%),
+            radial-gradient(900px 520px at 85% 0%, rgba(247, 114, 114, 0.22), transparent 55%),
+            linear-gradient(180deg, #ffffff, #fffaf4);
+}
+/* ====== GARANTİ LAYOUT + KATMAN FIX ====== */
+html, body { height: 100%; }
+body { margin: 0; overflow-x: hidden; }
+#root { min-height: 100vh; }
+
+.App{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    isolation: isolate; /* z-index kavgasını keser */
+}
+
+.main-content{
+    flex: 1;
+    position: relative;
+    z-index: 1; /* içerik bg'nin üstünde */
+    min-height: 0;
+}
+
+/* Footer kesin görünür */
+footer, .footer{
+    position: relative;
+    z-index: 2;
+}
+
+/* Home bg: -1 YOK, 0 VAR */
+.if-home__bg{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Home içeriği bg'nin üstünde */
+.if-home__container{
+    position: relative;
+    z-index: 1;
+}
+
+/* Duyuru preview HOME içinde asla full-screen fixed olamasın */
+.if-home .if-ann{
+    position: static !important;
+    inset: auto !important;
+    z-index: auto !important;
+    background: transparent !important;
+    padding-top: 0 !important;
+}

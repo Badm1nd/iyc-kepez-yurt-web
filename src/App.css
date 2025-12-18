@@ -1,0 +1,22 @@
+html, body {
+    margin: 0;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Router içindeki ana sarmal */
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Routes alanı footer’ı aşağı iter */
+.main-content {
+    flex: 1;
+    min-height: 0;
+}

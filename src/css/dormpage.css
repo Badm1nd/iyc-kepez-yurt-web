@@ -1,0 +1,464 @@
+/* src/css/dormpage.css (SADECE DormPage layout) */
+
+.if-dorm{
+    padding-top: 80px;
+    min-height: 100vh;
+    position: relative;
+}
+
+.if-dorm .if-dorm__bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+            radial-gradient(900px 520px at 15% 10%, rgba(247, 114, 114, 0.30), transparent 60%),
+            radial-gradient(900px 520px at 85% 0%, rgba(247, 114, 114, 0.22), transparent 55%),
+            linear-gradient(180deg, #ffffff, #fffaf4);
+}
+
+.if-dorm .if-dorm__container{
+    width: min(1200px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 28px 0 56px;
+}
+
+/* HERO */
+.if-dorm .if-dormHero{ padding: 10px 0 22px; }
+
+.if-dorm .if-dormHero__grid{
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 18px;
+    align-items: start;
+}
+.if-dorm .if-dormcard {
+    box-shadow: rgba(149,157,165,.18) 0 10px 26px;
+    justify-items: center;
+    border: 1px solid #f3cdd6;
+}
+.if-dorm .if-dormHero__left{ padding-top: 46px; }
+.if-dorm .if-dormHero__right{ padding-top: 10px; }
+
+.if-dorm .if-heroActions{
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* mini stats */
+.if-dorm .if-miniStats{
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 520px;
+}
+
+.if-dorm .if-miniStats__item{
+    background: rgba(255,255,255,0.7);
+    border: 1px solid #f3cdd6;
+    border-radius: 14px;
+    padding: 10px 12px;
+}
+
+.if-dorm .if-miniStats__k{
+    display: block;
+    font-size: 12px;
+    color: #666;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.if-dorm .if-miniStats__v{
+    display: block;
+    font-size: 13.5px;
+    color: #1f1f1f;
+    font-weight: 700;
+}
+
+/* right card */
+.if-dorm .if-heroCard{
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.78);
+    border: 1px solid #f3cdd6;
+    box-shadow: rgba(149, 157, 165, 0.18) 0px 10px 26px;
+}
+
+.if-dorm .if-heroCard__top h3{
+    margin: 2px 0 4px;
+    font-size: 18px;
+}
+
+.if-dorm .if-heroCard__top p{
+    margin: 0 0 12px;
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+.if-dorm .if-perkGrid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.if-dorm .if-perk{
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.72);
+    border: 1px solid #f2c7d1;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.if-dorm .if-perk:hover{
+    transform: translateY(-1px);
+    box-shadow: rgba(149, 157, 165, 0.22) 0px 10px 22px;
+}
+
+.if-dorm .if-perk__icon{
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, rgba(255, 77, 134, 0.22), rgba(255, 122, 166, 0.18));
+    border: 1px solid rgba(255, 77, 134, 0.22);
+    font-size: 18px;
+}
+
+.if-dorm .if-perk__txt h4{
+    margin: 0 0 4px;
+    font-size: 14.5px;
+}
+
+.if-dorm .if-perk__txt p{
+    margin: 0;
+    color: #4a4a4a;
+    line-height: 1.55;
+    font-size: 13.5px;
+}
+
+.if-dorm .if-heroCard__note{
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(255, 239, 244, 0.7);
+    border: 1px dashed rgba(255, 77, 134, 0.35);
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 10px;
+    align-items: start;
+}
+
+.if-dorm .if-section{
+    padding-top: 25px;
+}
+
+.if-dorm .if-chip{
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.78);
+    border: 1px solid rgba(255, 77, 134, 0.22);
+}
+
+/* facilities grid */
+.if-dorm .if-twoCol{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.if-dorm .if-card__head{
+    padding: 14px 14px 10px;
+}
+
+.if-dorm .if-card__head h3{
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.if-dorm .if-list{
+    margin: 0;
+    padding: 0 16px 16px 16px;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+}
+
+.if-dorm .if-list li{
+    padding-left: 14px;
+    position: relative;
+    color: #2b2b2b;
+    line-height: 1.6;
+    font-weight: 600;
+    font-size: 13.5px;
+}
+
+.if-dorm .if-list li::before{
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    position: absolute;
+    left: 0;
+    top: 9px;
+    background: #d57878;
+    box-shadow: 0 0 0 4px rgba(255, 77, 134, 0.12);
+}
+
+/* location */
+.if-dorm .if-locationGrid{
+    padding-top: 25px;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 14px;
+    align-items: stretch;
+}
+
+.if-dorm .if-locationCard{ padding: 16px; }
+
+/* MiniMap kartı: tek başına durunca tüm satırı kaplasın ve içi tam dolsun */
+.if-dorm .if-mapCard{
+    padding: 0;
+    grid-column: 1 / -1;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+/* DormPage içindeki inline maxWidth:360 wrapper'ını ez */
+.if-dorm .if-mapCard > div{
+    max-width: none !important;
+    width: 100%;
+}
+
+/* Eğer dışta <h3>Harita</h3> varsa düzgün dursun */
+.if-dorm .if-mapCard > h3{
+    margin: 0;
+    padding: 16px 16px 10px;
+    font-size: 16px;
+}
+
+.if-dorm .if-pillRow{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.if-dorm .if-pill{
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.72);
+    border: 1px solid #f2c7d1;
+    font-weight: 800;
+    font-size: 12.5px;
+    color: #2a2a2a;
+}
+
+.if-dorm .if-mapHint{
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(255, 239, 244, 0.6);
+    border: 1px solid rgba(255, 77, 134, 0.18);
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 10px;
+    color: #333;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+.if-dorm .if-mapHint__icon{
+    width: 34px;
+    height: 34px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.75);
+    border: 1px solid rgba(255, 77, 134, 0.18);
+}
+
+/* HARİTA ALTINDA ORTALANMIŞ "YOL TARİFİ" BUTONU */
+.if-maplink {
+    margin: 22px auto 0;
+    display: flex;
+    justify-content: center;
+}
+
+.if-maplink a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #f77272, #ff9ba9);
+    border: 1px solid #f6d3d3;
+    border-radius: 999px;
+    text-decoration: none;
+    box-shadow: rgba(149, 157, 165, 0.25) 0 8px 22px;
+    transition: all 0.2s ease;
+}
+
+.if-maplink a:hover {
+    transform: translateY(-1px);
+    box-shadow: rgba(149, 157, 165, 0.35) 0 10px 28px;
+    opacity: 0.95;
+}
+
+/* gallery */
+.if-dorm .if-gallery{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+
+}
+
+.if-dorm .if-galleryItem{
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: rgba(149, 157, 165, 0.18) 0px 10px 26px;
+    border: 1px solid #f2c7d1;
+}
+
+.if-dorm .if-galleryItem img{
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.02);
+    transition: transform 220ms ease;
+}
+
+.if-dorm .if-galleryItem:hover img{ transform: scale(1.06); }
+
+.if-dorm .if-galleryOverlay{
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.42));
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 12px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}
+
+.if-dorm .if-galleryItem:hover .if-galleryOverlay{ opacity: 1; }
+
+.if-dorm .if-galleryOverlay span{
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    background: rgb(212, 119, 119);
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.35);
+}
+
+/* lightbox */
+.if-dorm .if-lightbox{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.62);
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+}
+
+.if-dorm .if-lightbox__inner{
+    width: min(980px, 100%);
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: rgba(0,0,0,0.35) 0px 24px 60px;
+}
+
+.if-dorm .if-lightbox__close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 77, 134, 0.22);
+    background: rgba(255,255,255,0.85);
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.if-dorm .if-lightbox__img{
+    width: 100%;
+    height: min(78vh, 680px);
+    object-fit: contain;
+    background: #fff;
+    display: block;
+}
+
+/* FAQ + CTA */
+.if-dorm .if-twoCol--faq{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.if-dorm .if-faqQ{
+    margin: 14px 14px 6px;
+    font-size: 15px;
+}
+
+.if-dorm .if-faqA{
+    margin: 0 14px 14px;
+    color: #3f3f3f;
+    line-height: 1.7;
+    font-size: 13.5px;
+    font-weight: 600;
+}
+
+.if-dorm .if-cta{
+    margin-top: 25px;
+    padding: 16px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255, 65, 65, 0.25), rgba(255, 255, 255, 0.75));
+    border: 1px solid rgba(255, 77, 134, 0.20);
+    box-shadow: rgba(149, 157, 165, 0.18) 0px 10px 26px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+}
+
+.if-dorm .if-cta__actions{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* responsive */
+@media (max-width: 980px){
+    .if-dorm .if-dormHero__grid{ grid-template-columns: 1fr; }
+    .if-dorm .if-miniStats{ grid-template-columns: 1fr; max-width: 100%; }
+    .if-dorm .if-locationGrid{ grid-template-columns: 1fr; }
+    .if-dorm .if-gallery{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px){
+    .if-dorm .if-twoCol,
+    .if-dorm .if-twoCol--faq{ grid-template-columns: 1fr; }
+    .if-dorm .if-gallery{ grid-template-columns: 1fr; }
+    .if-dorm .if-cta{ grid-template-columns: 1fr; }
+    .if-dorm .if-cta__actions{ justify-content: flex-start; }
+}

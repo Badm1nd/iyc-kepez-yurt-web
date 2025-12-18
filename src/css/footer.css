@@ -1,0 +1,48 @@
+.footer {
+    padding: 48px 60px 28px;
+    background: #000000;
+    color: #f2f2f2;
+    font-family: "Poppins", sans-serif;
+}
+
+.footer-inner {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 eşit parça */
+    gap: 24px;
+    text-align: center; /* içeriği ortala */
+}
+
+.footer-col h4 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+}
+
+.footer-col p {
+    margin: 4px 0;
+    color: #d9d9d9;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-col a {
+    display: inline-block;
+    color: #d9d9d9;
+    text-decoration: none;
+    margin: 4px 0;
+    font-size: 14px;
+    transition: color 0.15s ease;
+}
+
+.footer-col a:hover {
+    color: #c02126;
+}
+
+.footer-bottom {
+    margin-top: 26px;
+    padding-top: 14px;
+    border-top: 1px solid #2a2a2a;
+    font-size: 13px;
+    color: #b8b8b8;
+}
+

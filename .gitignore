@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+server/node_modules/
+
+# builds
+dist/
+build/
+
+# env
+.env
+server/.env
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# uploads (repoya koymak istemezsen)
+server/uploads/

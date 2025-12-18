@@ -1,0 +1,254 @@
+/* =========================================
+   HomePage.css (SADECE home layout)
+   NOT: if-badge/if-title/if-btn/if-card artık if-base.css'te
+   ========================================= */
+
+.if-home {
+    isolation: isolate;
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    padding-top: 80px;
+}
+
+/* Arkaplan */
+.if-home__bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+            radial-gradient(900px 520px at 15% 10%, rgba(247, 114, 114, 0.30), transparent 60%),
+            radial-gradient(900px 520px at 85% 0%, rgba(247, 114, 114, 0.22), transparent 55%),
+            linear-gradient(180deg, #ffffff, #fffaf4);
+}
+
+/* Container */
+.if-home__container {
+    position: relative;
+    width: min(1200px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 28px 0 56px;
+}
+
+/* =========================================
+   HERO
+   ========================================= */
+.if-home .if-hero {
+    padding: 10px 0 26px;
+}
+
+.if-home .if-hero__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.if-home .if-hero__left {
+    padding-top: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.if-home .if-hero__right {
+    align-self: center;
+    padding-top: 50px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Slider wrapper */
+.if-home .if-sliderWrap {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    border-radius: calc(var(--if-radius) - 6px);
+    overflow: hidden;
+}
+
+/* Dış slider kartını şeffaflaştır */
+.if-home .if-card--padded.if-card--slider {
+    padding: 0 !important;
+}
+.if-home .if-card--slider {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+.if-home .if-sliderWrap .hero-slider,
+.if-home .if-sliderWrap .hero-slider__shell {
+    margin-left: auto;
+}
+
+/* =========================================
+   SECTIONS (home)
+   ========================================= */
+.if-home .if-section {
+    margin-top: 28px;
+}
+
+.if-home .if-section__head {
+    margin-bottom: 14px;
+}
+
+.if-home .if-rowBetween {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.if-home .if-h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+/* Card varyasyonları (home’a özel) */
+.if-home .if-card--padded { padding: 0; }
+
+.if-home .if-card--slider {
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--if-border-soft);
+    background: #fff;
+}
+
+.if-home .if-card__body {
+    padding: 20px 22px;
+}
+
+.if-home .if-h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--if-text);
+}
+
+.if-home .if-text {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.7;
+    color: var(--if-muted);
+}
+.if-muted {
+    padding-top: 30px;
+    padding-left: 25px;
+}
+
+.if-home .if-link {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+}
+.if-home .if-link:hover {
+    text-decoration: underline;
+    text-decoration-color: #000;
+}
+
+.if-home .if-card--accent {
+    border: 1px solid var(--if-border-soft);
+    background: #fff;
+    box-shadow: 0 14px 30px rgba(248, 113, 113, 0.08);
+}
+
+/* =========================================
+   TRIPS (preview)
+   ========================================= */
+.if-home .if-trip {
+    display: flex;
+    flex-direction: column;
+}
+
+.if-home .if-trip__img {
+    height: 180px;
+    background: linear-gradient(135deg, #fff5f5, #ffffff);
+    border-bottom: 1px solid var(--if-border-soft);
+    border-top-left-radius: var(--if-radius);
+    border-top-right-radius: var(--if-radius);
+}
+
+.if-home .if-trip__img--2 {
+    background: linear-gradient(135deg, #ffffff, #fff5f5);
+}
+
+.if-home .if-trip__img--3 {
+    background: linear-gradient(135deg, #fff, #ffecec);
+}
+
+
+/* =========================================
+   MINI GALERİ
+   ========================================= */
+.if-home .if-gallery { margin-top: 8px; }
+
+.if-home .if-gallery__grid {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.if-home .if-gallery__tile {
+    border-radius: var(--if-radius);
+    border: 1px solid var(--if-border);
+    box-shadow: var(--if-shadow);
+    overflow: hidden;
+    height: 180px;
+    position: relative;
+}
+
+.if-home .if-gallery__tile--1 { background: linear-gradient(135deg, #fff5f5, #ffffff); }
+.if-home .if-gallery__tile--2 { background: linear-gradient(135deg, #ffffff, #fff0f0); }
+.if-home .if-gallery__tile--3 { background: linear-gradient(135deg, #fff, #ffecec); }
+
+.if-home .if-gallery__tile:hover {
+    transform: translateY(-1px);
+    transition: transform .15s ease;
+}
+
+.if-home .if-gallery__cap {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--if-border-soft);
+    background: rgba(255,255,255,0.75);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--if-muted);
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 992px) {
+    .if-home .if-hero__grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .if-home .if-hero__left { padding-top: 30px; }
+    .if-home .if-grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .if-home .if-gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+    .if-home__container {
+        width: min(1200px, calc(100% - 32px));
+        padding: 22px 0 44px;
+    }
+    .if-home .if-trip__img {
+        border-top-left-radius: var(--if-radius-sm);
+        border-top-right-radius: var(--if-radius-sm);
+    }
+    .if-home .if-gallery__grid { grid-template-columns: 1fr; }
+    .if-home .if-gallery__tile { height: 170px; }
+}
