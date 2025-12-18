@@ -7,7 +7,7 @@
     isolation: isolate;
     min-height: 100vh;
     font-family: "Poppins", sans-serif;
-    padding-top: 80px;
+    padding-top: 90px; /* Increased from 80px to account for navbar height */
 }
 
 /* Arkaplan */
@@ -109,7 +109,7 @@
     margin: 0;
 }
 
-/* Card varyasyonları (home’a özel) */
+/* Card varyasyonları (home'a özel) */
 .if-home .if-card--padded { padding: 0; }
 
 .if-home .if-card--slider {
@@ -231,24 +231,184 @@
    RESPONSIVE
    ========================================= */
 @media (max-width: 992px) {
+    .if-home {
+        padding-top: 100px; /* Increased for mobile navbar height */
+    }
+    
     .if-home .if-hero__grid {
         grid-template-columns: 1fr;
         gap: 24px;
     }
-    .if-home .if-hero__left { padding-top: 30px; }
+    .if-home .if-hero__left { 
+        padding-top: 30px;
+        align-items: center;
+        text-align: center;
+    }
+    .if-home .if-hero__right {
+        padding-top: 20px;
+        justify-content: center;
+    }
     .if-home .if-grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .if-home .if-gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    
+    /* Adjust hero text alignment for mobile */
+    .if-home .if-hero__left .if-title,
+    .if-home .if-hero__left .if-subtitle {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .if-home .if-actions {
+        justify-content: center;
+    }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .if-home__container {
         width: min(1200px, calc(100% - 32px));
         padding: 22px 0 44px;
     }
+    
+    .if-home {
+        padding-top: 100px; /* Ensure content is below navbar */
+    }
+    
+    .if-home .if-hero__left { 
+        padding-top: 20px;
+    }
+    
+    .if-home .if-section {
+        margin-top: 20px;
+    }
+    
     .if-home .if-trip__img {
         border-top-left-radius: var(--if-radius-sm);
         border-top-right-radius: var(--if-radius-sm);
+        height: 160px;
     }
-    .if-home .if-gallery__grid { grid-template-columns: 1fr; }
-    .if-home .if-gallery__tile { height: 170px; }
+    
+    .if-home .if-gallery__grid { 
+        grid-template-columns: repeat(2, minmax(0, 1fr)); 
+        gap: 10px;
+    }
+    
+    .if-home .if-gallery__tile { 
+        height: 160px; 
+    }
+    
+    .if-home .if-card__body {
+        padding: 16px 18px;
+    }
+    
+    .if-home .if-h3 {
+        font-size: 0.95rem;
+    }
+    
+    .if-home .if-text {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .if-home__container {
+        width: min(1200px, calc(100% - 24px));
+        padding: 18px 0 36px;
+    }
+    
+    .if-home {
+        padding-top: 100px; /* Ensure content is below navbar */
+    }
+    
+    .if-home .if-hero__left { 
+        padding-top: 15px;
+        gap: 10px;
+    }
+    
+    .if-home .if-hero__right {
+        padding-top: 15px;
+    }
+    
+    .if-home .if-trip__img {
+        height: 140px;
+    }
+    
+    .if-home .if-gallery__grid { 
+        grid-template-columns: 1fr; 
+        gap: 12px;
+    }
+    
+    .if-home .if-gallery__tile { 
+        height: 150px; 
+    }
+    
+    .if-home .if-section {
+        margin-top: 16px;
+    }
+    
+    .if-home .if-rowBetween {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .if-home .if-h2 {
+        font-size: 1.1rem;
+    }
+    
+    .if-home .if-card__body {
+        padding: 14px 16px;
+    }
+    
+    .if-home .if-text {
+        font-size: 0.88rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .if-home {
+        padding-top: 100px; /* Ensure content is below navbar */
+    }
+    
+    .if-home__container {
+        width: min(1200px, calc(100% - 20px));
+        padding: 15px 0 30px;
+    }
+    
+    .if-home .if-hero__left { 
+        padding-top: 10px;
+        gap: 8px;
+    }
+    
+    .if-home .if-title {
+        font-size: 1.8rem;
+    }
+    
+    .if-home .if-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .if-home .if-trip__img {
+        height: 120px;
+    }
+    
+    .if-home .if-gallery__tile { 
+        height: 140px; 
+    }
+    
+    .if-home .if-section {
+        margin-top: 14px;
+    }
+    
+    .if-home .if-card__body {
+        padding: 12px 14px;
+    }
+    
+    .if-home .if-h3 {
+        font-size: 0.9rem;
+    }
+    
+    .if-home .if-text {
+        font-size: 0.85rem;
+    }
 }

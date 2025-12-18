@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "../css/navbar.css"
 const logo = "/navbar-logo.png";
@@ -7,6 +7,12 @@ const facebooklogo = "/navbar-facebook.png";
 const xlogo = "/navbar-x.png";
 
 function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-container">
@@ -15,7 +21,13 @@ function Navbar() {
                         <img src={logo} alt="İlim Yayma Cemiyeti Antalya" />
                     </div>
                 </div>
-                <div className="navbar-center">
+                {/* Hamburger Menu Button */}
+                <div className="navbar-toggle" onClick={toggleMenu}>
+                    <span className="bar"></span>
+                    <span className="bar"></span>
+                    <span className="bar"></span>
+                </div>
+                <div className={`navbar-center ${isMenuOpen ? 'active' : ''}`}>
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink
@@ -23,6 +35,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                             }
+                            onClick={() => setIsMenuOpen(false)}
                             >
                                 ANA SAYFA
 
@@ -33,6 +46,7 @@ function Navbar() {
                                      className={({ isActive }) =>
                                          isActive ? "nav-link active" : "nav-link"
                                      }
+                                     onClick={() => setIsMenuOpen(false)}
                             >
                                 KURUMSAL
                             </NavLink>
@@ -43,6 +57,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                             }
+                            onClick={() => setIsMenuOpen(false)}
                             >
                                 YURDUMUZ
                             </NavLink>
@@ -53,6 +68,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                             }
+                            onClick={() => setIsMenuOpen(false)}
                             >
                                 ETKİNLİKLER
                             </NavLink>
@@ -63,6 +79,7 @@ function Navbar() {
                             className={({ isActive }) =>
                                 isActive ? "nav-link active" : "nav-link"
                             }
+                            onClick={() => setIsMenuOpen(false)}
                             >
                                 İLETİŞİM
                             </NavLink>

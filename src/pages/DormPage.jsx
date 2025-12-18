@@ -17,18 +17,18 @@ export default function DormPage() {
 
     const facilities = useMemo(
         () => [
-            { title: "Odalar", items: ["Ortopedik yatak", "Kişisel dolap", "Çalışma masası", "Kitaplık", "Klima (varsa)"] },
+            { title: "Odalar", items: ["Ortopedik yatak", "Kişisel dolap", "Çalışma masası", "Kitaplık", "Klima"] },
             { title: "Ortak Alanlar", items: ["Etüt odası", "Kütüphane", "Mescit", "Dinlenme alanı", "Kafeterya / yemekhane"] },
             { title: "Hizmetler", items: ["7/24 internet", "Sıcak su", "Oda / ortak alan temizliği", "Çamaşırhane", "Ütü alanı"] },
-            { title: "Güvenlik & Altyapı", items: ["Yangın uyarı sistemi", "Yangın merdiveni", "Jeneratör (varsa)", "Deprem raporu (varsa)", "Su deposu (varsa)"] },
+            { title: "Güvenlik & Altyapı", items: ["Yangın uyarı sistemi", "Yangın merdiveni"] },
         ],
         []
     );
 
     const faqs = useMemo(
         () => [
-            { q: "Ziyaret saatleri nasıl?", a: "Yurt yönetiminin belirlediği saat aralığında, ziyaretçi alanında görüşme yapılır." },
-            { q: "Yemek düzeni nasıl?", a: "Genelde kahvaltı + akşam yemeği; hafta sonu geç kahvaltı gibi uygulamalar olabilir." },
+            { q: "Yurda giriş çıkış saatleri nasıl?", a: "Yurdumuzda giriş-çıkış düzeni öğrencilerimizin güvenliği ve düzenin sağlanması amacıyla belirlenmiştir. Bu kapsamda son giriş saati 23.00’dır." },
+            { q: "Yemek düzeni nasıl?", a: "Genelde kahvaltı + akşam yemeği; hafta sonu geç kahvaltı imkanları." },
             { q: "Ulaşım zor mu?", a: "Kepez’de toplu taşıma seçenekleri fazla; günlük rota genelde rahat akar." },
             { q: "Etüt ortamı sessiz mi?", a: "Etüt alanları ‘ders modu’ için düzenlenir; sessizlik kültürü önemsenir." },
         ],
@@ -180,7 +180,6 @@ export default function DormPage() {
                     <div className="if-faqGrid">
                         <div className="if-sectionHead if-sectionHead--tight">
                             <h2>Sık Sorulanlar</h2>
-                            <p>Kafanı kurcalayan şeyler varsa buradan başla.</p>
                         </div>
 
                         <div className="if-twoCol if-twoCol--faq">
