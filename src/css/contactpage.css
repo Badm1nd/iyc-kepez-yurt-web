@@ -9,7 +9,7 @@
             linear-gradient(180deg, #ffffff, #fffaf4);
     justify-items: center;
     align-items: center;
-    padding-top: 160px; /* navbar yüksekliğin kaçsa onu yaz (80/90/100) */
+    padding-top: 80px; /* navbar yüksekliği kadar üst boşluk (80px) */
     padding-bottom: 150px;
 }
 .contact-page {
@@ -246,12 +246,16 @@
     .contact-layout {
         grid-template-columns: 1fr;
     }
+    
+    .contact-shell {
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+    }
 }
 
 @media (max-width: 640px) {
     .contact-page {
         padding: 0 16px;
-        margin-top: 96px;
+        margin-top: 70px;
     }
 
     .contact-hero {
@@ -267,4 +271,25 @@
     .side-card {
         padding: 18px 16px;
     }
+    
+    .contact-shell {
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+    }
+    .hero-tag {
+        margin: auto;
+    }
+
+    .hero-title {
+        margin: auto;
+        text-align: center;
+    }
+
+    .hero-subtitle {
+        text-align: center;
+    }
+    .hero-right {
+        margin: auto;
+        text-align: center;
+    }
+
 }

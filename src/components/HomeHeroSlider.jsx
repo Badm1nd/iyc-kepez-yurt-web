@@ -20,7 +20,7 @@ export default function HomeHeroSlider() {
         () => [
             {
                 title: "Genel Özellikler",
-                desc: "Asansör, bahçe, çamaşırhane, deprem raporu, dinlenme odası, etüt odası, jeneratör, kafeterya, kütüphane, mescit, şark odası, ütü odası/alanı, valiz odası, yangın merdiveni, yangın uyarı sistemi, su deposu, yemekhane ve ziyaretçi odası/alanıyla her detay düşünülmüş bir yaşam alanı sunuyoruz.",
+                desc: "Asansör, bahçe, çamaşırhane, deprem raporu, dinlenme odası, etüt odası, jeneratör, kafeterya, kütüphane, mescit, şark odası, ütü odası/alanı, valiz odası, yangın merdiveni, yangın uyarı sistemi, yemekhane ile her detay düşünülmüş bir yaşam alanı sunuyoruz.",
                 img: "/iyc-bina.jpg",
             },
             {

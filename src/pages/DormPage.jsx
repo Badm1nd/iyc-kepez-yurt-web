@@ -68,7 +68,7 @@ export default function DormPage() {
                         <div className="if-dormHero__left">
                             <p className="if-badge">
                                 <span className="if-dot" />
-                                İlim Yayma Cemiyeti Kepez Yurdu
+                                İLİM YAYMA CEMİYETİ KEPEZ ERKEK YURDU
                             </p>
 
                             <h1 className="if-title">

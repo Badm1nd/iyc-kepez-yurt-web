@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .trips-shell {
-    padding-top: 70px;
+    padding-top: 80px; /* navbar yüksekliği kadar üst boşluk (80px) */
     inset: 0;
     z-index: -1;
     background:
@@ -188,7 +188,13 @@
 
 /* Mobilde üst padding biraz düşsün */
 @media (max-width: 600px) {
-    .trips-page-container { padding-top: 105px; }
+    .trips-page-container { 
+        padding-top: 20px;
+    }
+    
+    .trips-shell {
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+    }
 }
 
 .trips-pagination{

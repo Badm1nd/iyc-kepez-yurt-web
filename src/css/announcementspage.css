@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .if-ann-page{
-    padding-top: 90px; /* navbar fixed ise */
+    padding-top: 80px; /* navbar yüksekliği kadar üst boşluk (80px) */
     font-family: "Poppins", sans-serif;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .if-ann-page{
-    padding-top: 90px;
+    padding-top: 80px;
     font-family: "Poppins", sans-serif;
     min-height: 100vh;
     position: relative;
@@ -31,7 +31,6 @@
 }
 
 .if-ann__container{
-    width: min(1200px, calc(100% - 48px));
     margin: 0 auto;
 }
 
@@ -208,6 +207,13 @@
 @media (max-width: 860px){
     .if-ann__grid{ grid-template-columns: 1fr; }
     .if-ann__imgs{ grid-template-columns: repeat(3, 1fr); }
+    
+    .if-ann-page {
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+    }
+    .if-ann__container{
+        margin: 0 auto;
+    }
 }
 
 .if-ann__titleLink{ text-decoration: none; color: inherit; }

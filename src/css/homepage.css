@@ -1,16 +1,9 @@
-/* =========================================
-   HomePage.css (SADECE home layout)
-   NOT: if-badge/if-title/if-btn/if-card artık if-base.css'te
-   ========================================= */
-
 .if-home {
     isolation: isolate;
     min-height: 100vh;
     font-family: "Poppins", sans-serif;
-    padding-top: 90px; /* Increased from 80px to account for navbar height */
 }
 
-/* Arkaplan */
 .if-home__bg {
     position: fixed;
     inset: 0;
@@ -232,7 +225,7 @@
    ========================================= */
 @media (max-width: 992px) {
     .if-home {
-        padding-top: 100px; /* Increased for mobile navbar height */
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
     }
     
     .if-home .if-hero__grid {
@@ -271,7 +264,7 @@
     }
     
     .if-home {
-        padding-top: 100px; /* Ensure content is below navbar */
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
     }
     
     .if-home .if-hero__left { 
@@ -317,7 +310,7 @@
     }
     
     .if-home {
-        padding-top: 100px; /* Ensure content is below navbar */
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
     }
     
     .if-home .if-hero__left { 
@@ -367,7 +360,7 @@
 
 @media (max-width: 480px) {
     .if-home {
-        padding-top: 100px; /* Ensure content is below navbar */
+        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
     }
     
     .if-home__container {

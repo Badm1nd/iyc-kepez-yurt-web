@@ -15,7 +15,7 @@ export default function HomePage() {
                 <section className="if-hero">
                     <div className="if-hero__grid">
                         <div className="if-hero__left">
-                            <p className="if-badge">İlim Yayma Cemiyeti Kepez Yurdu</p>
+                            <p className="if-badge">İLİM YAYMA CEMİYETİ KEPEZ ERKEK YURDU</p>
                             <h1 className="if-title">Gençliğe rehber, eğitime destek.</h1>
                             <p className="if-subtitle">
                                 Yurt yaşamı, etkinlikler, geziler ve duyurular tek yerde. Aşağıdan en son paylaşımlara göz at.

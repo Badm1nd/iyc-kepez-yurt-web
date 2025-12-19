@@ -135,6 +135,9 @@ body {
     .if-grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
+    .if-badge {
+        margin-inline: auto;
+    }
     .if-title { font-size: 1.7rem; }
     .if-card { border-radius: var(--if-radius-sm); }
     .if-grid2 { grid-template-columns: 1fr; }

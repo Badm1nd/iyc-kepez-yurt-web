@@ -1,7 +1,7 @@
 /* src/css/dormpage.css (SADECE DormPage layout) */
 
 .if-dorm{
-    padding-top: 80px;
+    padding-top: 25px;
     min-height: 100vh;
     position: relative;
 }
@@ -456,6 +456,21 @@
 }
 
 @media (max-width: 640px){
+    .if-dorm{
+        padding-top: 20px;
+    }
+    .if-dormHero__left{
+        align-items: center;
+        text-align: center;
+    }
+
+    .if-dormHero__left .if-subtitle{
+        margin-inline: auto;
+    }
+
+    .if-heroActions{
+        justify-content: center;
+    }
     .if-dorm .if-twoCol,
     .if-dorm .if-twoCol--faq{ grid-template-columns: 1fr; }
     .if-dorm .if-gallery{ grid-template-columns: 1fr; }

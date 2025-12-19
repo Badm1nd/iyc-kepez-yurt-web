@@ -2,6 +2,17 @@ html, body {
     margin: 0;
 }
 
+html {
+    background:
+            radial-gradient(900px 520px at 15% 10%, rgba(247, 114, 114, 0.30), transparent 60%),
+            radial-gradient(900px 520px at 85% 0%, rgba(247, 114, 114, 0.22), transparent 55%),
+            linear-gradient(180deg, #ffffff, #fffaf4);
+}
+
+body {
+    background: transparent;
+}
+
 #root {
     min-height: 100vh;
     display: flex;

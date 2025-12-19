@@ -45,4 +45,11 @@
     font-size: 13px;
     color: #b8b8b8;
 }
-
+@media (max-width: 768px) {
+    .footer-inner {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        text-align: center;
+}
+}

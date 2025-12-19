@@ -4,6 +4,57 @@ import "../css/adminpage.css";
 const API_URL = "/api/events";
 const ANN_API = "/api/announcements";
 
+/* ✅ Basit sayfalama component'i */
+function Pager({ page, totalPages, onChange }) {
+    if (totalPages <= 1) return null;
+
+    const go = (p) => onChange(Math.max(1, Math.min(totalPages, p)));
+
+    // 5'li pencere: page-2..page+2
+    const start = Math.max(1, page - 2);
+    const end = Math.min(totalPages, page + 2);
+    const nums = [];
+    for (let i = start; i <= end; i++) nums.push(i);
+
+    return (
+        <div className="if-pager">
+            <button className="if-pager__btn" onClick={() => go(page - 1)} disabled={page === 1}>
+                ‹
+            </button>
+
+            {start > 1 && (
+                <>
+                    <button className="if-pager__num" onClick={() => go(1)}>1</button>
+                    {start > 2 && <span className="if-pager__dots">…</span>}
+                </>
+            )}
+
+            {nums.map((n) => (
+                <button
+                    key={n}
+                    className={`if-pager__num ${n === page ? "is-active" : ""}`}
+                    onClick={() => go(n)}
+                >
+                    {n}
+                </button>
+            ))}
+
+            {end < totalPages && (
+                <>
+                    {end < totalPages - 1 && <span className="if-pager__dots">…</span>}
+                    <button className="if-pager__num" onClick={() => go(totalPages)}>{totalPages}</button>
+                </>
+            )}
+
+            <button className="if-pager__btn" onClick={() => go(page + 1)} disabled={page === totalPages}>
+                ›
+            </button>
+
+            <span className="if-pager__info">{page}/{totalPages}</span>
+        </div>
+    );
+}
+
 function AdminPage() {
     const [token, setToken] = useState(() => sessionStorage.getItem("admin_token") || "");
     const isAuthed = !!token;
@@ -15,6 +66,10 @@ function AdminPage() {
     const [pickedFiles, setPickedFiles] = useState([]); // File[]
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    // ✅ events pagination
+    const [evPageSize, setEvPageSize] = useState(6);
+    const [evPage, setEvPage] = useState(1);
 
     const previews = useMemo(() => {
         return pickedFiles.map((f) => ({
@@ -32,9 +87,13 @@ function AdminPage() {
     // ---------- ANNOUNCEMENTS ----------
     const [annForm, setAnnForm] = useState({ title: "", text: "" });
     const [annImages, setAnnImages] = useState([]); // File[]
-    const [annFile, setAnnFile] = useState(null);   // File | null
+    const [annFile, setAnnFile] = useState(null); // File | null
     const [annList, setAnnList] = useState([]);
     const [annLoading, setAnnLoading] = useState(false);
+
+    // ✅ announcements pagination
+    const [annPageSize, setAnnPageSize] = useState(6);
+    const [annPage, setAnnPage] = useState(1);
 
     const annPreviews = useMemo(() => {
         return annImages.map((f) => ({
@@ -58,10 +117,7 @@ function AdminPage() {
                 setLoading(true);
                 setAnnLoading(true);
 
-                const [evRes, annRes] = await Promise.all([
-                    fetch(API_URL),
-                    fetch(ANN_API),
-                ]);
+                const [evRes, annRes] = await Promise.all([fetch(API_URL), fetch(ANN_API)]);
 
                 const evData = await evRes.json().catch(() => []);
                 const annData = await annRes.json().catch(() => []);
@@ -78,6 +134,28 @@ function AdminPage() {
 
         fetchAll();
     }, [isAuthed]);
+
+    // ✅ Sayfalama hesapları (events)
+    const evTotalPages = Math.max(1, Math.ceil(events.length / evPageSize));
+    useEffect(() => {
+        if (evPage > evTotalPages) setEvPage(evTotalPages);
+    }, [events.length, evPageSize]); // eslint-disable-line
+
+    const eventsPageItems = useMemo(() => {
+        const start = (evPage - 1) * evPageSize;
+        return events.slice(start, start + evPageSize);
+    }, [events, evPage, evPageSize]);
+
+    // ✅ Sayfalama hesapları (announcements)
+    const annTotalPages = Math.max(1, Math.ceil(annList.length / annPageSize));
+    useEffect(() => {
+        if (annPage > annTotalPages) setAnnPage(annTotalPages);
+    }, [annList.length, annPageSize]); // eslint-disable-line
+
+    const annPageItems = useMemo(() => {
+        const start = (annPage - 1) * annPageSize;
+        return annList.slice(start, start + annPageSize);
+    }, [annList, annPage, annPageSize]);
 
     // ---------- LOGIN ----------
     const handleLoginChange = (e) => {
@@ -250,6 +328,9 @@ function AdminPage() {
             setAnnForm({ title: "", text: "" });
             setAnnImages([]);
             setAnnFile(null);
+
+            // yeni duyuru geldi -> 1. sayfaya dönsün
+            setAnnPage(1);
         } catch (err) {
             alert("Hata: " + err.message);
             if (String(err.message).includes("Oturum") || String(err.message).includes("Yetkisiz")) logout();
@@ -373,10 +454,26 @@ function AdminPage() {
                         <span className="badge">{events.length}</span>
                     </div>
 
+                    <div className="if-pagesize">
+                        <span>Sayfa başı</span>
+                        <select
+                            value={evPageSize}
+                            onChange={(e) => {
+                                setEvPageSize(Number(e.target.value));
+                                setEvPage(1);
+                            }}
+                        >
+                            <option value={4}>4</option>
+                            <option value={6}>6</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                        </select>
+                    </div>
+
                     {loading && <p className="muted">Yükleniyor...</p>}
 
                     <ul className="events-list">
-                        {events.map((ev) => {
+                        {eventsPageItems.map((ev) => {
                             const imgs = Array.isArray(ev.images) ? ev.images : (ev.imageUrl ? [ev.imageUrl] : []);
                             return (
                                 <li key={ev.id} className="event-item">
@@ -404,6 +501,8 @@ function AdminPage() {
                             );
                         })}
                     </ul>
+
+                    <Pager page={evPage} totalPages={evTotalPages} onChange={setEvPage} />
                 </section>
             </div>
 
@@ -476,10 +575,26 @@ function AdminPage() {
                         <span className="badge">{annList.length}</span>
                     </div>
 
+                    <div className="if-pagesize">
+                        <span>Sayfa başı</span>
+                        <select
+                            value={annPageSize}
+                            onChange={(e) => {
+                                setAnnPageSize(Number(e.target.value));
+                                setAnnPage(1);
+                            }}
+                        >
+                            <option value={4}>4</option>
+                            <option value={6}>6</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                        </select>
+                    </div>
+
                     {annLoading && <p className="muted">Yükleniyor...</p>}
 
                     <ul className="events-list">
-                        {annList.map((a) => {
+                        {annPageItems.map((a) => {
                             const imgs = Array.isArray(a.images) ? a.images : [];
                             return (
                                 <li key={a.id} className="event-item">
@@ -517,6 +632,8 @@ function AdminPage() {
                             );
                         })}
                     </ul>
+
+                    <Pager page={annPage} totalPages={annTotalPages} onChange={setAnnPage} />
                 </section>
             </div>
         </div>
