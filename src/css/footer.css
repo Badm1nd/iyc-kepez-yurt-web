@@ -7,9 +7,9 @@
 
 .footer-inner {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 eşit parça */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
-    text-align: center; /* içeriği ortala */
+    text-align: center;
 }
 
 .footer-col h4 {
@@ -32,6 +32,9 @@
     margin: 4px 0;
     font-size: 14px;
     transition: color 0.15s ease;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .footer-col a:hover {
@@ -45,11 +48,35 @@
     font-size: 13px;
     color: #b8b8b8;
 }
+
 @media (max-width: 768px) {
+    .footer {
+        padding: 28px 16px 18px;
+    }
+
     .footer-inner {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .footer-col h4 {
+        margin-bottom: 8px;
+    }
+
+    .footer-bottom {
+        margin-top: 18px;
+        padding-top: 12px;
         text-align: center;
+    }
 }
+
+@media (max-width: 420px) {
+    .footer {
+        padding: 24px 12px 16px;
+    }
+
+    .footer-col p,
+    .footer-col a {
+        font-size: 13px;
+    }
 }
