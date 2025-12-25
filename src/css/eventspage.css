@@ -241,7 +241,6 @@
 .trips-preview{
     max-width: 1200px;
     margin: 0 auto;
-    padding: 10px 20px 18px;
     font-family: "Poppins", sans-serif;
 }
 
@@ -259,10 +258,10 @@
 }
 
 .trips-preview__title{
+    padding-top: 25px;
     margin: 0;
     font-size: 26px;
     letter-spacing: -0.3px;
-    padding-top: 25px;
 }
 
 .trips-preview__titleLink:hover .trips-preview__title{

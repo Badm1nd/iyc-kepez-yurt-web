@@ -134,10 +134,13 @@
     transform: translateY(25px);
     position: relative;
     z-index: 110;
+    border: 1px black solid;
+    border-inline: none;
+
 }
 
 .logo img {
-    width: 150px;
+    width: 140px;
     height: auto;
     object-fit: contain;
 }
@@ -266,6 +269,7 @@
     .logo {
         width: 80px;
         height: auto;
+        border: none;
     }
 
     .logo img {
