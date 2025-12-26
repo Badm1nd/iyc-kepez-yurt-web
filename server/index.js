@@ -366,6 +366,11 @@ app.delete("/api/announcements/:id", requireAdmin, async (req, res) => {
     }
 });
 
+console.log("BOOT_MARK:", "2025-12-26-LOGIN-FIX");
+console.log("ENV_FILE_EXISTS:", fs.existsSync(path.join(__dirname, ".env")));
+console.log("ADMIN_USER:", JSON.stringify(ADMIN_USER));
+console.log("ADMIN_PASS_LEN:", ADMIN_PASS.length);
+
 app.listen(PORT, () => {
     console.log(`API listening on http://localhost:${PORT}`);
 });
