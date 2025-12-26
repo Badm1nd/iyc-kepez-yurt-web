@@ -18,8 +18,11 @@ function Navbar() {
             <div className="navbar-container">
                 <div className="navbar-logo-container">
                     <div className="logo">
-                        <img src={logo} alt="İlim Yayma Cemiyeti Antalya"/>
+                        <a href="/" aria-label="Anasayfa">
+                            <img src={logo} alt="İlim Yayma Cemiyeti Antalya" />
+                        </a>
                     </div>
+
                 </div>
                 {/* Hamburger Menu Button */}
                 <div className="navbar-toggle" onClick={toggleMenu}>

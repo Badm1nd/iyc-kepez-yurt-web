@@ -13,7 +13,7 @@ function Footer() {
         </div>
         <div className="footer-col">
           <h4>Bağlantılar</h4>
-          <a href="/public">Ana Sayfa</a>
+          <a href="/">Ana Sayfa</a>
             <br/>
           <a href="/kurumsal">Kurumsal</a>
             <br/>
@@ -25,7 +25,7 @@ function Footer() {
         </div>
         <div className="footer-col">
           <h4>İletişim</h4>
-          <a href="tel:+90">+90 (552) 699 89 04</a>
+          <a href="tel:+90 (552) 699 89 04">+90 (552) 699 89 04</a>
             <br/>
           <a href="mailto:ahatliyurdu@iyc.org.tr">ahatliyurdu@iyc.org.tr</a>
             <br/>
