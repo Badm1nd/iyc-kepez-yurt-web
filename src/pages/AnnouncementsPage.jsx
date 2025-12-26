@@ -63,7 +63,7 @@ function AnnouncementsSection({ mode = "full", limit = 4 }) {
                             <Link to="/duyurular" className="if-ann__allBtn">Tümünü gör</Link>
                         </div>
                     ) : (
-                        <p className="if-ann__sub">Güncel bilgilendirmeler ve ek dosyalar.</p>
+                        <p className="if-ann__sub"></p>
                     )}
                 </div>
 

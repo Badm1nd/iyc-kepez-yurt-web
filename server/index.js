@@ -8,11 +8,18 @@ import path from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
 import crypto from "crypto";
+import { v2 as cloudinary } from "cloudinary";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.join(__dirname, ".env") });
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express();
 const PORT = process.env.PORT || 5174;
@@ -22,11 +29,6 @@ app.use(express.json());
 
 const EVENTS_FILE = path.join(__dirname, "events.json");
 const ANNOUNCEMENTS_FILE = path.join(__dirname, "announcements.json");
-
-const uploadsDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-
-app.use("/uploads", express.static(uploadsDir));
 
 const ADMIN_USER = String(process.env.ADMIN_USER || "admin").trim();
 const ADMIN_PASS = String(process.env.ADMIN_PASS || "iyc2025").trim();
@@ -95,17 +97,24 @@ app.post("/api/admin/logout", (req, res) => {
     res.json({ ok: true });
 });
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, uploadsDir),
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname || "");
-        const safe = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-        cb(null, safe);
-    },
-});
+const uploadToCloudinary = (buffer, opts) =>
+    new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(opts, (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+        });
+        stream.end(buffer);
+    });
 
-const upload = multer({
-    storage,
+const destroyFromCloudinary = (publicId, resourceType) => {
+    if (!publicId) return Promise.resolve();
+    const options = { invalidate: true };
+    if (resourceType) options.resource_type = resourceType;
+    return cloudinary.uploader.destroy(publicId, options).catch(() => {});
+};
+
+const uploadEvents = multer({
+    storage: multer.memoryStorage(),
     limits: { fileSize: 8 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (file.mimetype && file.mimetype.startsWith("image/")) return cb(null, true);
@@ -114,7 +123,7 @@ const upload = multer({
 });
 
 const uploadAnn = multer({
-    storage,
+    storage: multer.memoryStorage(),
     limits: { fileSize: 25 * 1024 * 1024 },
 });
 
@@ -149,36 +158,6 @@ app.post("/api/contact", async (req, res) => {
         res.status(500).json({ error: "Gönderilemedi" });
     }
 });
-
-function filePathFromPublicUrl(url) {
-    if (!url || typeof url !== "string") return null;
-    if (!url.startsWith("/uploads/")) return null;
-    return path.join(uploadsDir, url.replace("/uploads/", ""));
-}
-
-async function safeUnlinkByUrl(url) {
-    const fp = filePathFromPublicUrl(url);
-    if (!fp) return;
-    try {
-        await fsp.unlink(fp);
-    } catch (_) {}
-}
-
-async function deleteUploadedMulterFiles(reqFiles) {
-    const all = [];
-    if (!reqFiles) return;
-    for (const key of Object.keys(reqFiles)) {
-        const arr = Array.isArray(reqFiles[key]) ? reqFiles[key] : [];
-        for (const f of arr) all.push(f);
-    }
-    await Promise.all(
-        all.map(async (f) => {
-            try {
-                await fsp.unlink(path.join(uploadsDir, f.filename));
-            } catch (_) {}
-        })
-    );
-}
 
 async function loadEvents() {
     try {
@@ -224,24 +203,34 @@ app.get("/api/events", async (req, res) => {
     }
 });
 
-app.post("/api/events", requireAdmin, upload.array("images", 12), async (req, res) => {
+app.post("/api/events", requireAdmin, uploadEvents.array("images", 12), async (req, res) => {
     const { title, date, description } = req.body || {};
 
-    if (!title || !date) {
-        return res.status(400).json({ error: "Başlık ve tarih zorunlu" });
-    }
+    if (!title || !date) return res.status(400).json({ error: "Başlık ve tarih zorunlu" });
 
     try {
         const events = await loadEvents();
-        const images = (req.files || []).map((f) => `/uploads/${f.filename}`);
+
+        const uploaded = await Promise.all(
+            (req.files || []).map((f) =>
+                uploadToCloudinary(f.buffer, {
+                    folder: "iyc/events",
+                    resource_type: "image",
+                })
+            )
+        );
+
+        const imageUrls = uploaded.map((r) => r.secure_url);
+        const publicIds = uploaded.map((r) => r.public_id);
 
         const newEvent = {
             id: Date.now(),
             title,
             date,
             description: description || "",
-            images,
-            imageUrl: images[0] || "",
+            images: imageUrls,
+            imageUrl: imageUrls[0] || "",
+            cloudinaryPublicIds: publicIds,
         };
 
         events.push(newEvent);
@@ -264,10 +253,8 @@ app.delete("/api/events/:id", requireAdmin, async (req, res) => {
         const filtered = events.filter((e) => e.id !== id);
         await saveEvents(filtered);
 
-        if (target) {
-            const imgs = Array.isArray(target.images) ? target.images : target.imageUrl ? [target.imageUrl] : [];
-            await Promise.all(imgs.map((u) => safeUnlinkByUrl(u)));
-        }
+        const publicIds = Array.isArray(target?.cloudinaryPublicIds) ? target.cloudinaryPublicIds : [];
+        await Promise.all(publicIds.map((pid) => destroyFromCloudinary(pid, "image")));
 
         res.json({ ok: true });
     } catch (err) {
@@ -297,25 +284,43 @@ app.post(
     async (req, res) => {
         try {
             const { title = "", text = "" } = req.body || {};
-            if (!title.trim() || !text.trim()) {
-                await deleteUploadedMulterFiles(req.files);
-                return res.status(400).json({ error: "Başlık ve açıklama zorunlu." });
-            }
+            if (!title.trim() || !text.trim()) return res.status(400).json({ error: "Başlık ve açıklama zorunlu." });
 
             const imageFiles = req.files?.images || [];
             const bad = imageFiles.find((f) => !(f.mimetype && f.mimetype.startsWith("image/")));
-            if (bad) {
-                await deleteUploadedMulterFiles(req.files);
-                return res.status(400).json({ error: "Görseller alanına sadece resim yükleyebilirsin." });
-            }
+            if (bad) return res.status(400).json({ error: "Görseller alanına sadece resim yükleyebilirsin." });
 
-            const images = imageFiles.map((f) => ({
-                url: `/uploads/${f.filename}`,
-                name: f.originalname || "",
+            const uploadedImages = await Promise.all(
+                imageFiles.map((f) =>
+                    uploadToCloudinary(f.buffer, {
+                        folder: "iyc/announcements/images",
+                        resource_type: "image",
+                    })
+                )
+            );
+
+            const images = uploadedImages.map((r, idx) => ({
+                url: r.secure_url,
+                name: imageFiles[idx]?.originalname || "",
+                publicId: r.public_id,
             }));
 
             const fileF = req.files?.file?.[0] || null;
-            const fileObj = fileF ? { url: `/uploads/${fileF.filename}`, name: fileF.originalname || "" } : null;
+            let fileObj = null;
+
+            if (fileF) {
+                const uploadedFile = await uploadToCloudinary(fileF.buffer, {
+                    folder: "iyc/announcements/files",
+                    resource_type: "raw",
+                });
+
+                fileObj = {
+                    url: uploadedFile.secure_url,
+                    name: fileF.originalname || "",
+                    publicId: uploadedFile.public_id,
+                    resourceType: "raw",
+                };
+            }
 
             const list = await loadAnnouncements();
 
@@ -334,7 +339,6 @@ app.post(
             res.status(201).json(item);
         } catch (err) {
             console.error("POST /api/announcements hata:", err);
-            await deleteUploadedMulterFiles(req.files);
             res.status(500).json({ error: "Duyuru eklenemedi" });
         }
     }
@@ -350,13 +354,11 @@ app.delete("/api/announcements/:id", requireAdmin, async (req, res) => {
 
         await saveAnnouncements(filtered);
 
-        if (target) {
-            const imgs = Array.isArray(target.images) ? target.images : [];
-            await Promise.all(imgs.map((img) => safeUnlinkByUrl(img?.url)));
+        const imgPublicIds = Array.isArray(target?.images) ? target.images.map((x) => x?.publicId).filter(Boolean) : [];
+        await Promise.all(imgPublicIds.map((pid) => destroyFromCloudinary(pid, "image")));
 
-            if (target.file?.url) {
-                await safeUnlinkByUrl(target.file.url);
-            }
+        if (target?.file?.publicId) {
+            await destroyFromCloudinary(target.file.publicId, target.file.resourceType || "raw");
         }
 
         res.json({ ok: true });
@@ -365,11 +367,6 @@ app.delete("/api/announcements/:id", requireAdmin, async (req, res) => {
         res.status(500).json({ error: "Silme işlemi başarısız" });
     }
 });
-
-console.log("BOOT_MARK:", "2025-12-26-LOGIN-FIX");
-console.log("ENV_FILE_EXISTS:", fs.existsSync(path.join(__dirname, ".env")));
-console.log("ADMIN_USER:", JSON.stringify(ADMIN_USER));
-console.log("ADMIN_PASS_LEN:", ADMIN_PASS.length);
 
 app.listen(PORT, () => {
     console.log(`API listening on http://localhost:${PORT}`);
