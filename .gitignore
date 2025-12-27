@@ -7,7 +7,7 @@ dist/
 build/
 
 # env
-.env
+server/.env
 server/.env
 
 # logs

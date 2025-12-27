@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import multer from "multer";
 import crypto from "crypto";
 import { v2 as cloudinary } from "cloudinary";
+import { Resend } from "resend";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -139,23 +140,44 @@ if (SMTP_USER && SMTP_PASS) {
     });
 }
 
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
 app.post("/api/contact", async (req, res) => {
     const { name, email, message } = req.body || {};
     if (!name || !email || !message) return res.status(400).json({ error: "Eksik alan" });
-    if (!transporter) return res.status(500).json({ error: "Mail ayarları eksik (SMTP_USER/PASS)" });
+
+    const toEmail = process.env.TO_EMAIL || process.env.RESEND_TO || "";
+
+    if (resend) {
+        try {
+            await resend.emails.send({
+                from: "IYC Kepez <onboarding@resend.dev>",
+                to: [toEmail || email],
+                reply_to: email,
+                subject: "Yeni iletişim formu",
+                text: `Ad: ${name}\nEmail: ${email}\nMesaj: ${message}`,
+            });
+            return res.json({ ok: true });
+        } catch (err) {
+            console.error("Resend hata:", err);
+            return res.status(500).json({ error: "Gönderilemedi" });
+        }
+    }
+
+    if (!transporter) return res.status(500).json({ error: "Mail ayarları eksik (RESEND_API_KEY veya SMTP_USER/PASS)" });
 
     try {
         await transporter.sendMail({
             from: `"Site İletişim" <${SMTP_USER}>`,
-            to: TO_EMAIL || SMTP_USER,
+            to: toEmail || TO_EMAIL || SMTP_USER,
             replyTo: email,
             subject: "Yeni iletişim formu",
             text: `Ad: ${name}\nEmail: ${email}\nMesaj: ${message}`,
         });
-        res.json({ ok: true });
+        return res.json({ ok: true });
     } catch (err) {
         console.error("Mail gönderilemedi", err);
-        res.status(500).json({ error: "Gönderilemedi" });
+        return res.status(500).json({ error: "Gönderilemedi" });
     }
 });
 
@@ -205,7 +227,6 @@ app.get("/api/events", async (req, res) => {
 
 app.post("/api/events", requireAdmin, uploadEvents.array("images", 12), async (req, res) => {
     const { title, date, description } = req.body || {};
-
     if (!title || !date) return res.status(400).json({ error: "Başlık ve tarih zorunlu" });
 
     try {
@@ -213,10 +234,7 @@ app.post("/api/events", requireAdmin, uploadEvents.array("images", 12), async (r
 
         const uploaded = await Promise.all(
             (req.files || []).map((f) =>
-                uploadToCloudinary(f.buffer, {
-                    folder: "iyc/events",
-                    resource_type: "image",
-                })
+                uploadToCloudinary(f.buffer, { folder: "iyc/events", resource_type: "image" })
             )
         );
 
@@ -292,10 +310,7 @@ app.post(
 
             const uploadedImages = await Promise.all(
                 imageFiles.map((f) =>
-                    uploadToCloudinary(f.buffer, {
-                        folder: "iyc/announcements/images",
-                        resource_type: "image",
-                    })
+                    uploadToCloudinary(f.buffer, { folder: "iyc/announcements/images", resource_type: "image" })
                 )
             );
 
