@@ -41,6 +41,10 @@
     color: #c02126;
 }
 
+.footer-bot {
+    display: flex;
+    justify-content: space-between;
+}
 .footer-bottom {
     margin-top: 26px;
     padding-top: 14px;

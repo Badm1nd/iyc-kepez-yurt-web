@@ -14,7 +14,6 @@
             linear-gradient(180deg, #ffffff, #fffaf4);
 }
 
-/* Container */
 .if-home__container {
     position: relative;
     width: min(1200px, calc(100% - 48px));
@@ -22,9 +21,6 @@
     padding: 28px 0 56px;
 }
 
-/* =========================================
-   HERO
-   ========================================= */
 .if-home .if-hero {
     padding: 10px 0 26px;
 }
@@ -50,7 +46,6 @@
     justify-content: flex-end;
 }
 
-/* Slider wrapper */
 .if-home .if-sliderWrap {
     display: flex;
     justify-content: flex-end;
@@ -61,7 +56,6 @@
     overflow: hidden;
 }
 
-/* Dış slider kartını şeffaflaştır */
 .if-home .if-card--padded.if-card--slider {
     padding: 0 !important;
 }
@@ -76,9 +70,6 @@
     margin-left: auto;
 }
 
-/* =========================================
-   SECTIONS (home)
-   ========================================= */
 .if-home .if-section {
     margin-top: 28px;
 }
@@ -102,7 +93,6 @@
     margin: 0;
 }
 
-/* Card varyasyonları (home'a özel) */
 .if-home .if-card--padded { padding: 0; }
 
 .if-home .if-card--slider {
@@ -152,9 +142,6 @@
     box-shadow: 0 14px 30px rgba(248, 113, 113, 0.08);
 }
 
-/* =========================================
-   TRIPS (preview)
-   ========================================= */
 .if-home .if-trip {
     display: flex;
     flex-direction: column;
@@ -176,10 +163,6 @@
     background: linear-gradient(135deg, #fff, #ffecec);
 }
 
-
-/* =========================================
-   MINI GALERİ
-   ========================================= */
 .if-home .if-gallery { margin-top: 8px; }
 
 .if-home .if-gallery__grid {
@@ -220,12 +203,9 @@
     color: var(--if-muted);
 }
 
-/* =========================================
-   RESPONSIVE
-   ========================================= */
 @media (max-width: 992px) {
     .if-home {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
     
     .if-home .if-hero__grid {
@@ -248,7 +228,6 @@
     .if-home .if-grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .if-home .if-gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     
-    /* Adjust hero text alignment for mobile */
     .if-home .if-hero__left .if-title,
     .if-home .if-hero__left .if-subtitle {
         text-align: center;
@@ -282,7 +261,7 @@
     }
     
     .if-home {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
     
     .if-home .if-hero__left { 
@@ -331,7 +310,7 @@
     }
     
     .if-home {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
     
     .if-home .if-hero__left { 
@@ -389,7 +368,7 @@
 
 @media (max-width: 480px) {
     .if-home {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
     
     .if-home__container {

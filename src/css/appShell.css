@@ -1,5 +1,11 @@
-html, body { height: 100%; }
-body { margin: 0; }
+html, body { 
+    min-height: 100%; 
+}
+body { 
+    margin: 0; 
+    overflow-x: hidden; 
+    overflow-y: auto;
+}
 
 #root{
     min-height: 100vh;
@@ -16,8 +22,8 @@ body { margin: 0; }
 }
 
 .app-main{
-    flex: 1;              /* footer'ı aşağı iter */
-    padding-top: 80px;     /* navbar yüksekliği kadar üst boşluk (80px) */
+    flex: 1;
+    padding-top: 80px;
 }
 
 .app-bg{
@@ -31,34 +37,27 @@ body { margin: 0; }
             linear-gradient(180deg, #ffffff, #fffaf4);
 }
 
-/* ====== GARANTİ LAYOUT + KATMAN FIX ====== */
-html, body { height: 100%; }
-body { margin: 0; overflow-x: hidden; }
-#root { min-height: 100vh; }
-
 .App{
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     position: relative;
-    isolation: isolate; /* z-index kavgasını keser */
+    isolation: isolate;
 }
 
 .main-content{
     flex: 1;
     position: relative;
-    z-index: 1; /* içerik bg'nin üstünde */
+    z-index: 1;
     min-height: 0;
-    padding-top: 80px; /* navbar yüksekliği kadar üst boşluk (80px) */
+    padding-top: 80px;
 }
 
-/* Footer kesin görünür */
 footer, .footer{
     position: relative;
     z-index: 2;
 }
 
-/* Home bg: -1 YOK, 0 VAR */
 .if-home__bg{
     position: fixed;
     inset: 0;
@@ -66,13 +65,11 @@ footer, .footer{
     pointer-events: none;
 }
 
-/* Home içeriği bg'nin üstünde */
 .if-home__container{
     position: relative;
     z-index: 1;
 }
 
-/* Duyuru preview HOME içinde asla full-screen fixed olamasın */
 .if-home .if-ann{
     position: static !important;
     inset: auto !important;
@@ -81,23 +78,22 @@ footer, .footer{
     padding-top: 0 !important;
 }
 
-/* Mobil cihazlarda padding ayarlamaları */
 @media (max-width: 992px) {
     .main-content {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
     
     .app-main {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
 }
 
 @media (max-width: 640px) {
     .main-content {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
     
     .app-main {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+        padding-top: 70px;
     }
 }

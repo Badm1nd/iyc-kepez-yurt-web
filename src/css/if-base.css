@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
-/* Ortak tema değişkenleri (global kalsın) */
 :root {
     --if-text: #111827;
     --if-muted: #4b5563;
@@ -31,8 +30,6 @@ body {
     font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--if-text);
 }
-
-/* ===== ORTAK BİLEŞENLER (tüm sayfalarda aynı) ===== */
 
 .if-badge {
     display: inline-flex;

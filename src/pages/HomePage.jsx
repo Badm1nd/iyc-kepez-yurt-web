@@ -11,7 +11,6 @@ export default function HomePage() {
             <div className="if-home__bg" />
 
             <main className="if-home__container">
-                {/* HERO */}
                 <section className="if-hero">
                     <div className="if-hero__grid">
                         <div className="if-hero__left">
@@ -40,8 +39,6 @@ export default function HomePage() {
 
                 <EventsPreview limit={4} />
 
-
-                {/* DUYURULAR + HIZLI LİNKLER */}
                 <section className="if-section">
                     <div className="if-section__head">
                         <AnnouncementsPreview limit={2} />

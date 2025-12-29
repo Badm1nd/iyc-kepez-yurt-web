@@ -2,6 +2,7 @@ html, body {
     margin: 0;
     width: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 html {
@@ -21,14 +22,12 @@ body {
     flex-direction: column;
 }
 
-/* Router içindeki ana sarmal */
 .App {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* Routes alanı footer’ı aşağı iter */
 .main-content {
     flex: 1;
     min-height: 0;

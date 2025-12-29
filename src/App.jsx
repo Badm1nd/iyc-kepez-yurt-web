@@ -16,7 +16,7 @@ function ScrollToTop() {
     const { pathname } = useLocation();
 
     useLayoutEffect(() => {
-        const scroller = document.querySelector(".main-content"); // sende scroll yapan yer burası
+        const scroller = document.querySelector(".main-content");
         if (scroller) {
             scroller.scrollTo({ top: 0, left: 0, behavior: "auto" });
         } else {

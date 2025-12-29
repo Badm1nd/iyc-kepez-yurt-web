@@ -1,13 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-/* ✅ SADECE ADMIN ALANINI ETKİLER */
 .admin-shell,
 .admin-shell *{
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
 
-/* ---------- ADMIN THEME (LOCAL VARIABLES) ---------- */
 .admin-shell{
     --bg:#0b1220;
     --panel:rgba(255,255,255,0.06);
@@ -22,11 +20,9 @@
 
     flex: 1;
     width: 100%;
-    min-height: 100vh;              /* ✅ beyaz alt boşluk gider */
+    min-height: 100vh;
     color: var(--text);
     overflow-x: hidden;
-
-    /* Navbar fixed ise üst pay (90px navbar varsayımı) */
     padding: 44px 18px 70px;
     padding-top: calc(44px + 90px);
 
@@ -36,7 +32,6 @@
             linear-gradient(180deg,#070b14,var(--bg));
 }
 
-/* ---------- LOGIN ---------- */
 .admin-login-card{
     max-width: 520px;
     margin: 0 auto;
@@ -53,7 +48,6 @@
 .admin-title{ margin: 0; font-size: 26px; }
 .admin-subtitle{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
 
-/* ---------- TOPBAR ---------- */
 .admin-topbar{
     max-width: 1100px;
     margin: 0 auto 16px;
@@ -65,7 +59,6 @@
     padding: 18px;
 }
 
-/* ---------- GRID ---------- */
 .admin-grid{
     max-width: 1100px;
     margin: 0 auto;
@@ -78,7 +71,6 @@
     .admin-grid{ grid-template-columns: 1fr; }
 }
 
-/* ---------- CARD ---------- */
 .admin-shell .card{
     border: 1px solid var(--border);
     background: var(--card);
@@ -111,7 +103,6 @@
     white-space: nowrap;
 }
 
-/* ---------- FORM ---------- */
 .admin-shell .admin-form{
     display: flex;
     flex-direction: column;
@@ -155,7 +146,6 @@
     flex-wrap: wrap;
 }
 
-/* ---------- BUTTONS (SCOPED) ---------- */
 .admin-shell .btn{
     border: 1px solid rgba(255,255,255,0.18);
     background: rgba(0,0,0,0.28);
@@ -194,7 +184,6 @@
     font-size: 12px;
 }
 
-/* ---------- PICKED FILE THUMBS ---------- */
 .admin-shell .thumbs{
     margin-top: 12px;
     display: grid;
@@ -224,7 +213,6 @@
     border: 1px solid rgba(255,255,255,0.12);
 }
 
-/* ---------- EVENTS LIST ---------- */
 .admin-shell .events-list{
     list-style: none;
     padding: 0;
@@ -282,7 +270,6 @@
 
 .admin-shell .muted{ color: var(--muted); }
 
-/* ---- ANNOUNCEMENTS EXTRA ---- */
 .admin-shell .admin-grid--spaced{
     margin-top: 18px;
 }
@@ -318,7 +305,6 @@
     border-bottom-color: rgba(245,211,106,0.55);
 }
 
-/* sayfa başı seçici */
 .if-pagesize{
     display:flex;
     align-items:center;
@@ -336,7 +322,6 @@
     font: inherit;
 }
 
-/* pager */
 .if-pager{
     display:flex;
     align-items:center;

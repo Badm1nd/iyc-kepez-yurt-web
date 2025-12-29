@@ -39,7 +39,10 @@ function Footer() {
             </a>
         </div>
       </div>
+        <div className="footer-bot">
       <div className="footer-bottom">© {year} İYC Antalya</div>
+            <div className="footer-bottom">Developed by H. Bozoğlan</div>
+        </div>
     </footer>
   );
 }
