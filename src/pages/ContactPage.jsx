@@ -48,10 +48,22 @@ function ContactPage() {
                     <h3 className="hero-box-title">Hızlı Bilgiler</h3>
                     <ul className="hero-info-list">
                         <li>
-                            <span>E-posta:</span> ahatlıyurdu@iyc.org.tr
+                            <span>E-posta:</span> {" "}
+                            <a
+                                href="mailto:ahatlıyurdu@iyc.org.tr"
+                                className="contact-address-link"
+                            >
+                                ahatlıyurdu@iyc.org.tr
+                            </a>
                         </li>
                         <li>
-                            <span>Telefon:</span> +90 (552) 699 89 04
+                            <span>Telefon:</span> {" "}
+                            <a
+                                href="tel:+90 (552) 699 89 04"
+                                className="contact-address-link"
+                            >
+                                +90 (552) 699 89 04
+                            </a>
                         </li>
                         <li>
                             <span>Adres:</span>{" "}

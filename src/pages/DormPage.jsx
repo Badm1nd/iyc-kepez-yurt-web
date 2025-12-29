@@ -34,26 +34,26 @@ export default function DormPage() {
         ],
         []
     );
-
-    // basit mini-galeri (public klasörüne koyarsın)
+    //fixed
     const gallery = useMemo(
         () => [
-            { src: "../public/iyc-bina.jpg", alt: "Yurt dış görünüm" },
-            { src: "../public/iyc-giris.jpg", alt: "Yurt içi görünüm" },
-            { src: "../public/iyc-derslik.jpg", alt: "Etüt alanı" },
-            { src: "../public/iyc-yatakhane.jpg", alt: "Oda düzeni" },
-            { src: "../public/iyc-ortak.jpg", alt: "Ortak alan" },
-            { src: "../public/iyc-ortak2.jpg", alt: "Ortak alan 2" },
-            { src: "../public/iyc-ortak3.jpg", alt: "Ortak alan 3" },
-            { src: "../public/iyc-ortak4.jpg", alt: "Ortak alan 4" },
-            { src: "../public/iyc-kamelya.jpg", alt: "Kamelya" },
-            { src: "../public/iyc-yemekhane.jpg", alt: "Koridor" },
-            { src: "../public/iyc-yönetim.jpg", alt: "Yönetim Odası" },
-            { src: "../public/iyc-koridor.jpg", alt: "Koridor" },
-            { src: "../public/iyc-mescid.jpg", alt: "Mescid" },
+            { src: "/iyc-bina.jpg", alt: "Yurt dış görünüm" },
+            { src: "/iyc-giris.jpg", alt: "Yurt içi görünüm" },
+            { src: "/iyc-derslik.jpg", alt: "Etüt alanı" },
+            { src: "/iyc-yatakhane.jpg", alt: "Oda düzeni" },
+            { src: "/iyc-ortak.jpg", alt: "Ortak alan" },
+            { src: "/iyc-ortak2.jpg", alt: "Ortak alan 2" },
+            { src: "/iyc-ortak3.jpg", alt: "Ortak alan 3" },
+            { src: "/iyc-ortak4.jpg", alt: "Ortak alan 4" },
+            { src: "/iyc-kamelya.jpg", alt: "Kamelya" },
+            { src: "/iyc-yemekhane.jpg", alt: "Yemekhane" },
+            { src: "/iyc-yönetim.jpg", alt: "Yönetim Odası" },
+            { src: "/iyc-koridor.jpg", alt: "Koridor" },
+            { src: "/iyc-mescid.jpg", alt: "Mescid" },
         ],
         []
     );
+
 
     const [lightbox, setLightbox] = useState({ open: false, src: "", alt: "" });
 

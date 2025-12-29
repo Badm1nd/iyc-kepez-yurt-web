@@ -1,23 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .if-ann-page{
-    padding-top: 80px; /* navbar yüksekliği kadar üst boşluk (80px) */
-    font-family: "Poppins", sans-serif;
-}
-
-.if-ann{
-    position: relative;      /* fixed KALKTI */
-    inset: auto;
-    z-index: auto;
-    padding-top: 0;          /* 130px KALKTI */
-    background: transparent; /* gradient KALKTI */
-}
-
-.if-ann-page{
     padding-top: 80px;
     font-family: "Poppins", sans-serif;
     min-height: 100vh;
     position: relative;
+}
+
+.if-ann{
+    position: relative;
+    inset: auto;
+    z-index: auto;
+    padding-top: 0;
+    background: transparent;
 }
 
 .if-ann-page__bg{
@@ -32,6 +27,7 @@
 
 .if-ann__container{
     margin: 0 auto;
+    padding: 28px 0 56px;
 }
 
 .if-ann__head{
@@ -59,6 +55,7 @@
 .if-ann__empty{
     padding: 14px 0;
     opacity: 0.7;
+    text-align: center;
 }
 
 .if-ann__grid{
@@ -163,8 +160,6 @@
     border-bottom-color: transparent;
 }
 
-
-/* lightbox */
 .if-ann__lightbox{
     position: fixed;
     inset: 0;
@@ -204,13 +199,37 @@
     display: block;
 }
 
-.if-ann__container{
-    margin: 0 auto;
-    padding: 28px 0 56px;
+.if-ann__titleLink{ text-decoration: none; color: inherit; }
+
+.if-ann__titleLink:hover .if-ann__title{
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+.if-ann__actions{ display:flex; align-items:center; gap:12px; }
+
+.if-ann__allBtn{
+    color: #be2f2f;
+    text-decoration:none;
+    font-weight:700;
+    font-size:13px;
+    border:1px solid #f8d5d5;
+    padding:8px 12px;
+    border-radius:999px;
+    background: rgba(255,255,255,0.75);
+}
+
+.if-ann__text--clamp{
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
 }
 
 .if-ann--preview{
     text-align: left;
+    background: transparent;
 }
 
 .if-ann--preview .if-ann__head{
@@ -233,68 +252,155 @@
     text-align: center;
 }
 
+.if-ann--full .if-ann__container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    overflow-x: hidden;
+}
+
 .if-ann--full .if-ann__head{
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 10px;
     text-align: center;
+    margin-bottom: 0;
 }
 
-.if-ann--full .if-ann__sub,
+.if-ann--full .if-ann__title{
+    padding-top: 0;
+    font-size: 30px;
+    text-align: center;
+    margin: 0 0 18px;
+    color: #111111;
+    letter-spacing: 0.5px;
+}
+
+.if-ann--full .if-ann__sub{
+    font-size: 14px;
+    color: #555555;
+    text-align: center;
+    margin-top: 8px;
+    opacity: 1;
+}
+
 .if-ann--full .if-ann__loading,
 .if-ann--full .if-ann__empty{
+    font-size: 14px;
+    color: #555555;
+    text-align: center;
+    margin-top: 8px;
+    opacity: 1;
+}
+
+.if-ann--full .if-ann__grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+    margin-top: 10px;
+}
+
+.if-ann--full .if-ann__card{
+    min-width: 0;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 18px 20px 20px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
+    border: 1px solid #f8d5d5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
     text-align: center;
 }
 
-.if-ann__empty{
-    text-align: center;
-    margin: 18px auto 0;
+.if-ann--full .if-ann__h3,
+.if-ann--full .if-ann__text{
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.if-ann--full .if-ann__h3{
+    font-size: 18px;
+    margin: 0;
+    color: #222222;
+    font-weight: 600;
+}
+
+.if-ann--full .if-ann__meta{
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.if-ann--full .if-ann__date{
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #d37373;
+    color: #ffffff;
+    opacity: 1;
+}
+
+.if-ann--full .if-ann__text{
+    font-size: 14px;
+    color: #444444;
+    margin: 0;
+    opacity: 1;
+}
+
+.if-ann--full .if-ann__imgs{
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.if-ann--full .if-ann__imgBtn{
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    width: 54px;
+    height: 54px;
+}
+
+.if-ann--full .if-ann__img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 1000px){
+    .if-ann--full .if-ann__grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 650px){
+    .if-ann--full .if-ann__grid{ grid-template-columns: 1fr; }
 }
 
 @media (max-width: 860px){
     .if-ann__container{
         width: min(1200px, calc(100% - 28px));
     }
-}
 
-@media (max-width: 860px){
     .if-ann__grid{ grid-template-columns: 1fr; }
     .if-ann__imgs{ grid-template-columns: repeat(3, 1fr); }
-    
-    .if-ann-page {
-        padding-top: 70px; /* mobilde navbar yüksekliği 70px */
+
+    .if-ann-page{
+        padding-top: 70px;
     }
-    .if-ann__container{
-        margin: 0 auto;
-        width: min(1200px, calc(100% - 28px));
-    }
+
+    .if-ann--full .if-ann__grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.if-ann__titleLink{ text-decoration: none; color: inherit; }
-.if-ann__titleLink:hover .if-ann__title{
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 6px;
-}
-.if-ann__actions{ display:flex; align-items:center; gap:12px; }
-.if-ann__allBtn{
-    color: #be2f2f;
-    text-decoration:none;
-    font-weight:700;
-    font-size:13px;
-    border:1px solid #f8d5d5;
-    padding:8px 12px;
-    border-radius:999px;
-    background: rgba(255,255,255,0.75);
-}
-.if-ann__text--clamp{
-    display:-webkit-box;
-    -webkit-line-clamp:3;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-}
-
-.if-ann--preview {
-    background: transparent;
+@media (max-width: 600px){
+    .if-ann--full .if-ann__container{ padding-top: 20px; }
 }
