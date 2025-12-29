@@ -1,15 +1,13 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import nodemailer from "nodemailer";
-import fs from "fs";
-import fsp from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
 import crypto from "crypto";
 import { v2 as cloudinary } from "cloudinary";
 import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,14 +20,23 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const sb =
+    SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+        ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+            auth: { persistSession: false },
+        })
+        : null;
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
 const app = express();
 const PORT = process.env.PORT || 5174;
 
 app.use(cors());
 app.use(express.json());
-
-const EVENTS_FILE = path.join(__dirname, "events.json");
-const ANNOUNCEMENTS_FILE = path.join(__dirname, "announcements.json");
 
 const ADMIN_USER = String(process.env.ADMIN_USER || "admin").trim();
 const ADMIN_PASS = String(process.env.ADMIN_PASS || "iyc2025").trim();
@@ -53,7 +60,6 @@ function checkLoginRateLimit(ip) {
 function requireAdmin(req, res, next) {
     const auth = req.headers.authorization || "";
     const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-
     if (!token) return res.status(401).json({ error: "Yetkisiz" });
 
     const s = sessions.get(token);
@@ -67,6 +73,15 @@ function requireAdmin(req, res, next) {
 
     next();
 }
+
+function requireDb(req, res, next) {
+    if (!sb) return res.status(500).json({ error: "DB ayarları eksik (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)" });
+    next();
+}
+
+app.get("/api/health", (req, res) => {
+    res.status(200).send("ok");
+});
 
 app.post("/api/admin/login", (req, res) => {
     const ip =
@@ -128,19 +143,71 @@ const uploadAnn = multer({
     limits: { fileSize: 25 * 1024 * 1024 },
 });
 
-const { SMTP_HOST = "smtp.gmail.com", SMTP_PORT = 587, SMTP_USER, SMTP_PASS, TO_EMAIL } = process.env;
-
-let transporter;
-if (SMTP_USER && SMTP_PASS) {
-    transporter = nodemailer.createTransport({
-        host: SMTP_HOST,
-        port: Number(SMTP_PORT),
-        secure: Number(SMTP_PORT) === 465,
-        auth: { user: SMTP_USER, pass: SMTP_PASS },
-    });
+async function dbGetEvents() {
+    const { data, error } = await sb.from("events").select("*").order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data || []).map((e) => ({
+        id: Number(e.id),
+        title: e.title,
+        date: e.date,
+        description: e.description,
+        images: e.images || [],
+        imageUrl: e.image_url || "",
+        cloudinaryPublicIds: e.cloudinary_public_ids || [],
+        createdAt: e.created_at,
+    }));
 }
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+async function dbInsertEvent(ev) {
+    const row = {
+        id: ev.id,
+        title: ev.title,
+        date: ev.date,
+        description: ev.description || "",
+        image_url: ev.imageUrl || "",
+        images: ev.images || [],
+        cloudinary_public_ids: ev.cloudinaryPublicIds || [],
+    };
+    const { error } = await sb.from("events").insert(row);
+    if (error) throw error;
+}
+
+async function dbDeleteEvent(id) {
+    const { data, error } = await sb.from("events").delete().eq("id", id).select("*").maybeSingle();
+    if (error) throw error;
+    return data;
+}
+
+async function dbGetAnnouncements() {
+    const { data, error } = await sb.from("announcements").select("*").order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data || []).map((a) => ({
+        id: Number(a.id),
+        title: a.title,
+        text: a.text,
+        images: a.images || [],
+        file: a.file || null,
+        createdAt: a.created_at,
+    }));
+}
+
+async function dbInsertAnnouncement(item) {
+    const row = {
+        id: item.id,
+        title: item.title,
+        text: item.text,
+        images: item.images || [],
+        file: item.file || null,
+    };
+    const { error } = await sb.from("announcements").insert(row);
+    if (error) throw error;
+}
+
+async function dbDeleteAnnouncement(id) {
+    const { data, error } = await sb.from("announcements").delete().eq("id", id).select("*").maybeSingle();
+    if (error) throw error;
+    return data;
+}
 
 app.post("/api/contact", async (req, res) => {
     const { name, email, message } = req.body || {};
@@ -148,76 +215,27 @@ app.post("/api/contact", async (req, res) => {
 
     const toEmail = process.env.TO_EMAIL || process.env.RESEND_TO || "";
 
-    if (resend) {
-        try {
-            await resend.emails.send({
-                from: "IYC Kepez <onboarding@resend.dev>",
-                to: [toEmail || email],
-                reply_to: email,
-                subject: "Yeni iletişim formu",
-                text: `Ad: ${name}\nEmail: ${email}\nMesaj: ${message}`,
-            });
-            return res.json({ ok: true });
-        } catch (err) {
-            console.error("Resend hata:", err);
-            return res.status(500).json({ error: "Gönderilemedi" });
-        }
-    }
-
-    if (!transporter) return res.status(500).json({ error: "Mail ayarları eksik (RESEND_API_KEY veya SMTP_USER/PASS)" });
+    if (!resend) return res.status(500).json({ error: "RESEND_API_KEY eksik" });
+    if (!toEmail) return res.status(500).json({ error: "TO_EMAIL eksik" });
 
     try {
-        await transporter.sendMail({
-            from: `"Site İletişim" <${SMTP_USER}>`,
-            to: toEmail || TO_EMAIL || SMTP_USER,
-            replyTo: email,
+        await resend.emails.send({
+            from: "IYC Kepez <onboarding@resend.dev>",
+            to: [toEmail],
+            reply_to: email,
             subject: "Yeni iletişim formu",
             text: `Ad: ${name}\nEmail: ${email}\nMesaj: ${message}`,
         });
         return res.json({ ok: true });
     } catch (err) {
-        console.error("Mail gönderilemedi", err);
+        console.error("Resend hata:", err);
         return res.status(500).json({ error: "Gönderilemedi" });
     }
 });
 
-async function loadEvents() {
+app.get("/api/events", requireDb, async (req, res) => {
     try {
-        const data = await fsp.readFile(EVENTS_FILE, "utf-8");
-        return JSON.parse(data);
-    } catch (err) {
-        if (err.code === "ENOENT") {
-            await fsp.writeFile(EVENTS_FILE, "[]", "utf-8");
-            return [];
-        }
-        throw err;
-    }
-}
-
-async function saveEvents(events) {
-    await fsp.writeFile(EVENTS_FILE, JSON.stringify(events, null, 2), "utf-8");
-}
-
-async function loadAnnouncements() {
-    try {
-        const data = await fsp.readFile(ANNOUNCEMENTS_FILE, "utf-8");
-        return JSON.parse(data);
-    } catch (err) {
-        if (err.code === "ENOENT") {
-            await fsp.writeFile(ANNOUNCEMENTS_FILE, "[]", "utf-8");
-            return [];
-        }
-        throw err;
-    }
-}
-
-async function saveAnnouncements(list) {
-    await fsp.writeFile(ANNOUNCEMENTS_FILE, JSON.stringify(list, null, 2), "utf-8");
-}
-
-app.get("/api/events", async (req, res) => {
-    try {
-        const events = await loadEvents();
+        const events = await dbGetEvents();
         res.json(events);
     } catch (err) {
         console.error("GET /api/events hata:", err);
@@ -225,17 +243,13 @@ app.get("/api/events", async (req, res) => {
     }
 });
 
-app.post("/api/events", requireAdmin, uploadEvents.array("images", 12), async (req, res) => {
+app.post("/api/events", requireDb, requireAdmin, uploadEvents.array("images", 12), async (req, res) => {
     const { title, date, description } = req.body || {};
     if (!title || !date) return res.status(400).json({ error: "Başlık ve tarih zorunlu" });
 
     try {
-        const events = await loadEvents();
-
         const uploaded = await Promise.all(
-            (req.files || []).map((f) =>
-                uploadToCloudinary(f.buffer, { folder: "iyc/events", resource_type: "image" })
-            )
+            (req.files || []).map((f) => uploadToCloudinary(f.buffer, { folder: "iyc/events", resource_type: "image" }))
         );
 
         const imageUrls = uploaded.map((r) => r.secure_url);
@@ -251,9 +265,7 @@ app.post("/api/events", requireAdmin, uploadEvents.array("images", 12), async (r
             cloudinaryPublicIds: publicIds,
         };
 
-        events.push(newEvent);
-        await saveEvents(events);
-
+        await dbInsertEvent(newEvent);
         res.status(201).json(newEvent);
     } catch (err) {
         console.error("POST /api/events hata:", err);
@@ -261,17 +273,13 @@ app.post("/api/events", requireAdmin, uploadEvents.array("images", 12), async (r
     }
 });
 
-app.delete("/api/events/:id", requireAdmin, async (req, res) => {
+app.delete("/api/events/:id", requireDb, requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
 
     try {
-        const events = await loadEvents();
-        const target = events.find((e) => e.id === id);
+        const deleted = await dbDeleteEvent(id);
 
-        const filtered = events.filter((e) => e.id !== id);
-        await saveEvents(filtered);
-
-        const publicIds = Array.isArray(target?.cloudinaryPublicIds) ? target.cloudinaryPublicIds : [];
+        const publicIds = Array.isArray(deleted?.cloudinary_public_ids) ? deleted.cloudinary_public_ids : [];
         await Promise.all(publicIds.map((pid) => destroyFromCloudinary(pid, "image")));
 
         res.json({ ok: true });
@@ -281,10 +289,9 @@ app.delete("/api/events/:id", requireAdmin, async (req, res) => {
     }
 });
 
-app.get("/api/announcements", async (req, res) => {
+app.get("/api/announcements", requireDb, async (req, res) => {
     try {
-        const list = await loadAnnouncements();
-        list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const list = await dbGetAnnouncements();
         res.json(list);
     } catch (err) {
         console.error("GET /api/announcements hata:", err);
@@ -294,6 +301,7 @@ app.get("/api/announcements", async (req, res) => {
 
 app.post(
     "/api/announcements",
+    requireDb,
     requireAdmin,
     uploadAnn.fields([
         { name: "images", maxCount: 12 },
@@ -337,8 +345,6 @@ app.post(
                 };
             }
 
-            const list = await loadAnnouncements();
-
             const item = {
                 id: Date.now(),
                 title: title.trim(),
@@ -348,9 +354,7 @@ app.post(
                 file: fileObj,
             };
 
-            list.unshift(item);
-            await saveAnnouncements(list);
-
+            await dbInsertAnnouncement(item);
             res.status(201).json(item);
         } catch (err) {
             console.error("POST /api/announcements hata:", err);
@@ -359,21 +363,17 @@ app.post(
     }
 );
 
-app.delete("/api/announcements/:id", requireAdmin, async (req, res) => {
+app.delete("/api/announcements/:id", requireDb, requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
 
     try {
-        const list = await loadAnnouncements();
-        const target = list.find((x) => Number(x.id) === id);
-        const filtered = list.filter((x) => Number(x.id) !== id);
+        const deleted = await dbDeleteAnnouncement(id);
 
-        await saveAnnouncements(filtered);
-
-        const imgPublicIds = Array.isArray(target?.images) ? target.images.map((x) => x?.publicId).filter(Boolean) : [];
+        const imgPublicIds = Array.isArray(deleted?.images) ? deleted.images.map((x) => x?.publicId).filter(Boolean) : [];
         await Promise.all(imgPublicIds.map((pid) => destroyFromCloudinary(pid, "image")));
 
-        if (target?.file?.publicId) {
-            await destroyFromCloudinary(target.file.publicId, target.file.resourceType || "raw");
+        if (deleted?.file?.publicId) {
+            await destroyFromCloudinary(deleted.file.publicId, deleted.file.resourceType || "raw");
         }
 
         res.json({ ok: true });
