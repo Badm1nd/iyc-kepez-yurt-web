@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../css/eventspage.css";
 
 const API_URL = "/api/events";
@@ -45,6 +45,7 @@ function useSortedEvents(events) {
 export function EventsPreview({ limit = 2 }) {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     const sorted = useSortedEvents(events);
     const latest = useMemo(() => sorted.slice(0, limit), [sorted, limit]);
@@ -63,6 +64,10 @@ export function EventsPreview({ limit = 2 }) {
         };
         fetchEvents();
     }, []);
+
+    const handleCardClick = (id) => {
+        navigate("/etkinliklerimiz", { state: { scrollToId: id } });
+    };
 
     return (
         <section className="trips-preview">
@@ -87,7 +92,12 @@ export function EventsPreview({ limit = 2 }) {
                         const cover = imgs[0] || "";
 
                         return (
-                            <div key={ev.id} className="trip-card trip-card--preview">
+                            <div
+                                key={ev.id}
+                                className="trip-card trip-card--preview"
+                                onClick={() => handleCardClick(ev.id)}
+                                style={{ cursor: "pointer" }}
+                            >
                                 <h3 className="trip-title">{ev.title}</h3>
                                 <span className="trip-date-chip">{formatTR(ev.date)}</span>
 
@@ -119,6 +129,8 @@ function TripsPage() {
     const [lightbox, setLightbox] = useState({ open: false, src: "", alt: "" });
 
     const [page, setPage] = useState(1);
+    const location = useLocation();
+    const cardRefs = useRef({});
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -151,6 +163,18 @@ function TripsPage() {
         if (page > totalPages) setPage(totalPages);
     }, [page, totalPages]);
 
+    useEffect(() => {
+        if (!loading && location.state?.scrollToId) {
+            const targetId = location.state.scrollToId;
+            setTimeout(() => {
+                const element = cardRefs.current[targetId];
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }, 100);
+        }
+    }, [loading, location.state]);
+
     const openLightbox = (src, alt) => {
         if (!src) return;
         setLightbox({ open: true, src, alt: alt || "Görsel" });
@@ -178,108 +202,112 @@ function TripsPage() {
 
     return (
         <div className="trips-shell">
-        <main className="trips-page">
-        <div className="trips-page-container">
-            <h1 className="trips-title-center">Etkinliklerimiz</h1>
+            <main className="trips-page">
+                <div className="trips-page-container">
+                    <h1 className="trips-title-center">Etkinliklerimiz</h1>
 
-            {sortedEvents.length === 0 && (
-                <p className="trips-info-text">Şu an kayıtlı gezi bulunmuyor.</p>
-            )}
+                    {sortedEvents.length === 0 && (
+                        <p className="trips-info-text">Şu an kayıtlı gezi bulunmuyor.</p>
+                    )}
 
-            <div className="trips-grid">
-                {pageEvents.map((ev) => {
-                    const imgs = getImgs(ev);
-                    const idx = activeImg[ev.id] ?? 0;
-                    const cover = imgs[idx] || "";
+                    <div className="trips-grid">
+                        {pageEvents.map((ev) => {
+                            const imgs = getImgs(ev);
+                            const idx = activeImg[ev.id] ?? 0;
+                            const cover = imgs[idx] || "";
 
-                    return (
-                        <div key={ev.id} className="trip-card">
-                            <h2 className="trip-title">{ev.title}</h2>
-                            <span className="trip-date-chip">{formatTR(ev.date)}</span>
+                            return (
+                                <div
+                                    key={ev.id}
+                                    className="trip-card"
+                                    ref={(el) => (cardRefs.current[ev.id] = el)}
+                                >
+                                    <h2 className="trip-title">{ev.title}</h2>
+                                    <span className="trip-date-chip">{formatTR(ev.date)}</span>
 
-                            {cover ? (
-                                <img
-                                    src={cover}
-                                    alt={ev.title}
-                                    className="trip-image trip-image-clickable"
-                                    onClick={() => openLightbox(cover, ev.title)}
-                                />
-                            ) : null}
+                                    {cover ? (
+                                        <img
+                                            src={cover}
+                                            alt={ev.title}
+                                            className="trip-image trip-image-clickable"
+                                            onClick={() => openLightbox(cover, ev.title)}
+                                        />
+                                    ) : null}
 
-                            {imgs.length > 1 && (
-                                <div className="trip-thumbs">
-                                    {imgs.map((src, i) => (
-                                        <button
-                                            type="button"
-                                            key={src + i}
-                                            className={`thumb-btn ${i === idx ? "active" : ""}`}
-                                            onClick={() => setActiveImg((p) => ({ ...p, [ev.id]: i }))}
-                                            title={`Görsel ${i + 1}`}
-                                        >
-                                            <img src={src} alt={`${ev.title}-${i + 1}`} />
-                                        </button>
-                                    ))}
+                                    {imgs.length > 1 && (
+                                        <div className="trip-thumbs">
+                                            {imgs.map((src, i) => (
+                                                <button
+                                                    type="button"
+                                                    key={src + i}
+                                                    className={`thumb-btn ${i === idx ? "active" : ""}`}
+                                                    onClick={() => setActiveImg((p) => ({ ...p, [ev.id]: i }))}
+                                                    title={`Görsel ${i + 1}`}
+                                                >
+                                                    <img src={src} alt={`${ev.title}-${i + 1}`} />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {ev.description && <p className="trip-description">{ev.description}</p>}
                                 </div>
-                            )}
+                            );
+                        })}
+                    </div>
 
-                            {ev.description && <p className="trip-description">{ev.description}</p>}
-                        </div>
-                    );
-                })}
-            </div>
-
-            {totalPages > 1 && (
-                <div className="trips-pagination">
-                    <button
-                        type="button"
-                        className="page-btn"
-                        disabled={page === 1}
-                        onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    >
-                        ‹
-                    </button>
-
-                    {Array.from({ length: totalPages }).map((_, i) => {
-                        const p = i + 1;
-                        return (
+                    {totalPages > 1 && (
+                        <div className="trips-pagination">
                             <button
-                                key={p}
                                 type="button"
-                                className={`page-btn ${p === page ? "active" : ""}`}
-                                onClick={() => setPage(p)}
+                                className="page-btn"
+                                disabled={page === 1}
+                                onClick={() => setPage((p) => Math.max(1, p - 1))}
                             >
-                                {p}
+                                ‹
                             </button>
-                        );
-                    })}
 
-                    <button
-                        type="button"
-                        className="page-btn"
-                        disabled={page === totalPages}
-                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                    >
-                        ›
-                    </button>
+                            {Array.from({ length: totalPages }).map((_, i) => {
+                                const p = i + 1;
+                                return (
+                                    <button
+                                        key={p}
+                                        type="button"
+                                        className={`page-btn ${p === page ? "active" : ""}`}
+                                        onClick={() => setPage(p)}
+                                    >
+                                        {p}
+                                    </button>
+                                );
+                            })}
+
+                            <button
+                                type="button"
+                                className="page-btn"
+                                disabled={page === totalPages}
+                                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                            >
+                                ›
+                            </button>
+                        </div>
+                    )}
+
+                    {lightbox.open && (
+                        <div className="lightbox" onClick={closeLightbox}>
+                            <button className="lightbox-close" onClick={closeLightbox} type="button">
+                                ✕
+                            </button>
+
+                            <img
+                                className="lightbox-img"
+                                src={lightbox.src}
+                                alt={lightbox.alt}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        </div>
+                    )}
                 </div>
-            )}
-
-            {lightbox.open && (
-                <div className="lightbox" onClick={closeLightbox}>
-                    <button className="lightbox-close" onClick={closeLightbox} type="button">
-                        ✕
-                    </button>
-
-                    <img
-                        className="lightbox-img"
-                        src={lightbox.src}
-                        alt={lightbox.alt}
-                        onClick={(e) => e.stopPropagation()}
-                    />
-                </div>
-            )}
-        </div>
-        </main>
+            </main>
         </div>
     );
 }
