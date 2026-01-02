@@ -1,9 +1,31 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect} from "react";
 import "../css/dormpage.css";
 import "../css/minimaps.css";
 import MiniMap from "../components/MiniMaps.jsx";
 
 export default function DormPage() {
+
+    useEffect(() => {
+        document.title = "Yurdumuz | İlim Yayma Cemiyeti Antalya Kepez Yurdu";
+        const descContent =
+            "Yurt imkanları: odalar, etüt alanı, yemekhane, ortak alanlar, güvenlik ve fotoğraf galerisi.";
+        let desc = document.querySelector('meta[name="description"]');
+        if (!desc) {
+            desc = document.createElement("meta");
+            desc.setAttribute("name", "description");
+            document.head.appendChild(desc);
+        }
+        desc.setAttribute("content", descContent);
+
+        const canonicalHref = "https://iyckepez.org.tr/yurdumuz";
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.setAttribute("rel", "canonical");
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute("href", canonicalHref);
+    }, []);
 
     const highlights = useMemo(
         () => [

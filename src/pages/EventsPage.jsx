@@ -133,6 +133,28 @@ function TripsPage() {
     const cardRefs = useRef({});
 
     useEffect(() => {
+        document.title = "Etkinliklerimiz | İlim Yayma Cemiyeti Antalya Kepez Yurdu";
+        const descContent =
+            "Geziler, seminerler ve sosyal etkinliklerimiz. Fotoğraflar ve etkinlik detayları burada.";
+        let desc = document.querySelector('meta[name="description"]');
+        if (!desc) {
+            desc = document.createElement("meta");
+            desc.setAttribute("name", "description");
+            document.head.appendChild(desc);
+        }
+        desc.setAttribute("content", descContent);
+
+        const canonicalHref = "https://iyckepez.org.tr/etkinliklerimiz";
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.setAttribute("rel", "canonical");
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute("href", canonicalHref);
+    }, []);
+
+    useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const res = await fetch(API_URL);

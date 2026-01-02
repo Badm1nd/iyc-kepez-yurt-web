@@ -2,6 +2,27 @@ import React, { useState } from "react";
 import "../css/contactpage.css";
 
 function ContactPage() {
+    useEffect(() => {
+        document.title = "İletişim | İlim Yayma Cemiyeti Antalya Kepez Yurdu";
+        const descContent =
+            "İlim Yayma Cemiyeti Kepez Yurdu iletişim bilgileri: adres, telefon, e-posta ve iletişim formu.";
+        let desc = document.querySelector('meta[name="description"]');
+        if (!desc) {
+            desc = document.createElement("meta");
+            desc.setAttribute("name", "description");
+            document.head.appendChild(desc);
+        }
+        desc.setAttribute("content", descContent);
+
+        const canonicalHref = "https://iyckepez.org.tr/iletisim";
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.setAttribute("rel", "canonical");
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute("href", canonicalHref);
+    }, []);
     const [form, setForm] = useState({ name: "", email: "", message: "" });
     const [status, setStatus] = useState({ sending: false, ok: null, error: "" });
 
@@ -33,7 +54,6 @@ function ContactPage() {
     return (
         <div className="contact-shell">
         <main className="contact-page">
-            {/* ÜST KART - HERO */}
             <section className="contact-hero">
                 <div className="hero-left">
                     <button className="hero-tag">İLETİŞİM</button>

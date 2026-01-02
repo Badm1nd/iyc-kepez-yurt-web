@@ -1,7 +1,28 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "../css/corporatepage.css";
 
 function CorporatePage() {
+    useEffect(() => {
+        document.title = "Kurumsal | İlim Yayma Cemiyeti Antalya Kepez Yurdu";
+        const descContent =
+            "İlim Yayma Cemiyeti Kepez Yurdu kurumsal bilgiler, tarihçe, vizyon ve misyon hakkında bilgi alın.";
+        let desc = document.querySelector('meta[name="description"]');
+        if (!desc) {
+            desc = document.createElement("meta");
+            desc.setAttribute("name", "description");
+            document.head.appendChild(desc);
+        }
+        desc.setAttribute("content", descContent);
+
+        const canonicalHref = "https://iyckepez.org.tr/kurumsal";
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.setAttribute("rel", "canonical");
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute("href", canonicalHref);
+    }, []);
     return (
         <div className="corporate-shell">
         <main className="corporate-page">

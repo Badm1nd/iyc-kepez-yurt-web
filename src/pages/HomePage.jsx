@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "../css/homepage.css";
 import "../css/eventspage.css"
 import HomeHeroSlider from "../components/HomeHeroSlider";
@@ -6,6 +6,29 @@ import { AnnouncementsPreview } from "./AnnouncementsPage.jsx";
 import { EventsPreview } from "./EventsPage.jsx";
 
 export default function HomePage() {
+
+    useEffect(() => {
+        document.title = "İlim Yayma Cemiyeti | Antalya Kepez Erkek Öğrenci Yurdu";
+
+        const descContent =
+            "Antalya Kepez’de güvenli ve düzenli yurt yaşamı: etüt, yemek, etkinlikler ve duyurular.";
+        let desc = document.querySelector('meta[name="description"]');
+        if (!desc) {
+            desc = document.createElement("meta");
+            desc.setAttribute("name", "description");
+            document.head.appendChild(desc);
+        }
+        desc.setAttribute("content", descContent);
+
+        const canonicalHref = "https://iyckepez.org.tr/";
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.setAttribute("rel", "canonical");
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute("href", canonicalHref);
+    }, []);
     return (
         <div className="if-home">
             <div className="if-home__bg" />

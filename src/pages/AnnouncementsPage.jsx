@@ -161,6 +161,27 @@ export function AnnouncementsPreview({ limit = 4 }) {
 }
 
 export default function AnnouncementsPage() {
+    useEffect(() => {
+        document.title = "Duyurular | İlim Yayma Cemiyeti Antalya Kepez Yurdu";
+        const descContent =
+            "İlim Yayma Cemiyeti Kepez Yurdu güncel duyurular ve bilgilendirmeler. En yeni duyurular burada.";
+        let desc = document.querySelector('meta[name="description"]');
+        if (!desc) {
+            desc = document.createElement("meta");
+            desc.setAttribute("name", "description");
+            document.head.appendChild(desc);
+        }
+        desc.setAttribute("content", descContent);
+
+        const canonicalHref = "https://iyckepez.org.tr/duyurular";
+        let canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) {
+            canonical = document.createElement("link");
+            canonical.setAttribute("rel", "canonical");
+            document.head.appendChild(canonical);
+        }
+        canonical.setAttribute("href", canonicalHref);
+    }, []);
     return (
         <div className="if-ann-page">
             <div className="if-ann-page__bg" />
