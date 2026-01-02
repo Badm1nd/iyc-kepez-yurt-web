@@ -4,13 +4,11 @@ import "../css/adminpage.css";
 const API_URL = "/api/events";
 const ANN_API = "/api/announcements";
 
-/* ✅ Basit sayfalama component'i */
 function Pager({ page, totalPages, onChange }) {
     if (totalPages <= 1) return null;
 
     const go = (p) => onChange(Math.max(1, Math.min(totalPages, p)));
 
-    // 5'li pencere: page-2..page+2
     const start = Math.max(1, page - 2);
     const end = Math.min(totalPages, page + 2);
     const nums = [];
@@ -58,16 +56,11 @@ function Pager({ page, totalPages, onChange }) {
 function AdminPage() {
     const [token, setToken] = useState(() => sessionStorage.getItem("admin_token") || "");
     const isAuthed = !!token;
-
     const [login, setLogin] = useState({ username: "", password: "" });
-
-    // ---------- EVENTS ----------
     const [form, setForm] = useState({ title: "", date: "", description: "" });
     const [pickedFiles, setPickedFiles] = useState([]); // File[]
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    // ✅ events pagination
     const [evPageSize, setEvPageSize] = useState(6);
     const [evPage, setEvPage] = useState(1);
 
@@ -84,14 +77,11 @@ function AdminPage() {
         };
     }, [previews]);
 
-    // ---------- ANNOUNCEMENTS ----------
     const [annForm, setAnnForm] = useState({ title: "", text: "" });
     const [annImages, setAnnImages] = useState([]); // File[]
     const [annFile, setAnnFile] = useState(null); // File | null
     const [annList, setAnnList] = useState([]);
     const [annLoading, setAnnLoading] = useState(false);
-
-    // ✅ announcements pagination
     const [annPageSize, setAnnPageSize] = useState(6);
     const [annPage, setAnnPage] = useState(1);
 
@@ -108,7 +98,6 @@ function AdminPage() {
         };
     }, [annPreviews]);
 
-    // ---------- FETCH (events + announcements) ----------
     useEffect(() => {
         if (!isAuthed) return;
 
@@ -135,7 +124,6 @@ function AdminPage() {
         fetchAll();
     }, [isAuthed]);
 
-    // ✅ Sayfalama hesapları (events)
     const evTotalPages = Math.max(1, Math.ceil(events.length / evPageSize));
     useEffect(() => {
         if (evPage > evTotalPages) setEvPage(evTotalPages);
@@ -146,7 +134,6 @@ function AdminPage() {
         return events.slice(start, start + evPageSize);
     }, [events, evPage, evPageSize]);
 
-    // ✅ Sayfalama hesapları (announcements)
     const annTotalPages = Math.max(1, Math.ceil(annList.length / annPageSize));
     useEffect(() => {
         if (annPage > annTotalPages) setAnnPage(annTotalPages);
@@ -157,7 +144,6 @@ function AdminPage() {
         return annList.slice(start, start + annPageSize);
     }, [annList, annPage, annPageSize]);
 
-    // ---------- LOGIN ----------
     const handleLoginChange = (e) => {
         const { name, value } = e.target;
         setLogin((p) => ({ ...p, [name]: value }));
@@ -191,8 +177,6 @@ function AdminPage() {
         sessionStorage.removeItem("admin_token");
         setToken("");
         setLogin({ username: "", password: "" });
-
-        // form temizliği
         setForm({ title: "", date: "", description: "" });
         setPickedFiles([]);
         setAnnForm({ title: "", text: "" });
@@ -200,7 +184,6 @@ function AdminPage() {
         setAnnFile(null);
     };
 
-    // ---------- EVENTS HANDLERS ----------
     const handleFormChange = (e) => {
         const { name, value } = e.target;
         setForm((p) => ({ ...p, [name]: value }));
@@ -271,7 +254,6 @@ function AdminPage() {
         }
     };
 
-    // ---------- ANNOUNCEMENTS HANDLERS ----------
     const handleAnnChange = (e) => {
         const { name, value } = e.target;
         setAnnForm((p) => ({ ...p, [name]: value }));
@@ -328,8 +310,6 @@ function AdminPage() {
             setAnnForm({ title: "", text: "" });
             setAnnImages([]);
             setAnnFile(null);
-
-            // yeni duyuru geldi -> 1. sayfaya dönsün
             setAnnPage(1);
         } catch (err) {
             alert("Hata: " + err.message);
@@ -392,7 +372,6 @@ function AdminPage() {
                 <button className="btn ghost" onClick={logout}>Çıkış</button>
             </header>
 
-            {/* -------- EVENTS -------- */}
             <div className="admin-grid">
                 <section className="card">
                     <div className="card-head">
@@ -506,7 +485,6 @@ function AdminPage() {
                 </section>
             </div>
 
-            {/* -------- ANNOUNCEMENTS -------- */}
             <div className="admin-grid admin-grid--spaced">
                 <section className="card">
                     <div className="card-head">

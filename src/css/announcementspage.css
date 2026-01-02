@@ -397,8 +397,6 @@
     .if-ann-page{
         padding-top: 70px;
     }
-
-    .if-ann--full .if-ann__grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 600px){

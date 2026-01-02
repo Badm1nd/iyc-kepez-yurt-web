@@ -62,7 +62,6 @@ export default function DormPage() {
             <div className="if-dorm__bg" />
 
             <main className="if-dorm__container">
-                {/* HERO */}
                 <section className="if-dormHero">
                     <div className="if-dormHero__grid">
                         <div className="if-dormHero__left">
@@ -100,7 +99,6 @@ export default function DormPage() {
                     </div>
                 </section>
 
-                {/* GALLERY */}
                 <section className="if-section">
                     <div className="if-sectionHead">
                         <h2>Fotoğraf Galerisi</h2>
@@ -134,7 +132,6 @@ export default function DormPage() {
                     )}
                 </section>
 
-                {/* FACILITIES */}
                 <section className="if-section">
                     <div className="if-sectionHead">
                         <h2>Yurt İmkanları</h2>
@@ -159,7 +156,6 @@ export default function DormPage() {
                     </div>
                 </section>
 
-                {/* LOCATION */}
                 <section className="if-section">
                     <div className="if-locationGrid">
                         <div className="if-dormcard if-mapShell">
@@ -175,7 +171,6 @@ export default function DormPage() {
 
                 </section>
 
-                {/* FAQ + CTA */}
                 <section className="if-section if-last">
                     <div className="if-faqGrid">
                         <div className="if-sectionHead if-sectionHead--tight">

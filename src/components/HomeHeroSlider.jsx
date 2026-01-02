@@ -37,15 +37,12 @@ export default function HomeHeroSlider() {
         []
     );
 
-    // ✅ Ref’ler gelince navigation’ı tekrar init et (asıl fix bu)
     useEffect(() => {
         if (!swiperInstance) return;
         if (!prevRef.current || !nextRef.current) return;
 
         swiperInstance.params.navigation.prevEl = prevRef.current;
         swiperInstance.params.navigation.nextEl = nextRef.current;
-
-        // bazen eski nav state kalıyor, temizleyip tekrar başlat
         swiperInstance.navigation.destroy();
         swiperInstance.navigation.init();
         swiperInstance.navigation.update();

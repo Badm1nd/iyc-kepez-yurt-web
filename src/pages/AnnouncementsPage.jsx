@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../css/announcementspage.css";
 
 const ANN_API = "/api/announcements";
@@ -20,6 +20,9 @@ function AnnouncementsSection({ mode = "full", limit = 4 }) {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [lightbox, setLightbox] = useState({ open: false, src: "", alt: "" });
+    const navigate = useNavigate();
+    const location = useLocation();
+    const cardRefs = useRef({});
 
     const sorted = useMemo(() => {
         const arr = Array.isArray(items) ? items.slice() : [];
@@ -44,6 +47,24 @@ function AnnouncementsSection({ mode = "full", limit = 4 }) {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if (mode === "full" && !loading && location.state?.scrollToId) {
+            const targetId = location.state.scrollToId;
+            setTimeout(() => {
+                const element = cardRefs.current[targetId];
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }, 100);
+        }
+    }, [mode, loading, location.state]);
+
+    const handleCardClick = (id) => {
+        if (mode === "preview") {
+            navigate("/duyurular", { state: { scrollToId: id } });
+        }
+    };
 
     return (
         <section className={`if-ann ${mode === "preview" ? "if-ann--preview" : "if-ann--full"}`}>
@@ -74,7 +95,13 @@ function AnnouncementsSection({ mode = "full", limit = 4 }) {
                 ) : (
                     <div className="if-ann__grid">
                         {viewItems.map((a) => (
-                            <article className="if-card if-ann__card" key={a.id}>
+                            <article
+                                className="if-card if-ann__card"
+                                key={a.id}
+                                ref={(el) => (cardRefs.current[a.id] = el)}
+                                onClick={() => mode === "preview" && handleCardClick(a.id)}
+                                style={mode === "preview" ? { cursor: "pointer" } : {}}
+                            >
                                 <div className="if-ann__meta">
                                     <span className="if-ann__date">{fmtDate(a.createdAt)}</span>
                                 </div>
@@ -129,12 +156,10 @@ function AnnouncementsSection({ mode = "full", limit = 4 }) {
     );
 }
 
-/** HomePage için: en yeni duyurular */
 export function AnnouncementsPreview({ limit = 4 }) {
     return <AnnouncementsSection mode="preview" limit={limit} />;
 }
 
-/** /duyurular sayfası */
 export default function AnnouncementsPage() {
     return (
         <div className="if-ann-page">

@@ -5,7 +5,6 @@ import "../css/eventspage.css";
 const API_URL = "/api/events";
 const PER_PAGE = 12;
 
-// ---------- helpers ----------
 const getImgs = (ev) => {
     if (Array.isArray(ev.images) && ev.images.length) return ev.images;
     if (ev.imageUrl) return [ev.imageUrl];
@@ -23,7 +22,6 @@ const formatTR = (dateStr) => {
     }).format(d);
 };
 
-// ✅ Trips listesi için sıralama (en yeni üstte)
 function useSortedEvents(events) {
     return useMemo(() => {
         const copy = [...events];
@@ -44,9 +42,6 @@ function useSortedEvents(events) {
     }, [events]);
 }
 
-/* =========================================================
-   ✅ HOME PREVIEW (aynı dosyada)
-========================================================= */
 export function EventsPreview({ limit = 2 }) {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -116,9 +111,6 @@ export function EventsPreview({ limit = 2 }) {
     );
 }
 
-/* =========================================================
-   ✅ ASIL SAYFA (/etkinliklerimiz)
-========================================================= */
 function TripsPage() {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
